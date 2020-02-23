@@ -25,7 +25,7 @@
     <integer name="config_fingerprintSensorLocation">1</integer>
 
     <!-- Device specific doze package -->
-    <string name="config_customDozePackage">org.lineageos.settings.doze/org.lineageos.settings.doze.DozeSettingsActivity</string>
+    <!--string name="config_customDozePackage">org.omnirom.device/org.omnirom.device.DozeSettingsActivity</string-->
     
 	<bool name="config_gesture_settings_enabled">true</bool>
 
