@@ -86,7 +86,7 @@ public class KeyHandler implements DeviceKeyHandler {
     protected static final int GESTURE_REQUEST = 1;
     private static final int GESTURE_WAKELOCK_DURATION = 2000;
     private static final String KEY_CONTROL_PATH = "/proc/touchpanel/key_disable";
-    private static final String FPC_CONTROL_PATH = "/sys/devices/soc/soc:fpc_fpc1020/proximity_state";
+    private static final String FPC_CONTROL_PATH = "/sys/devices/platform/soc/soc:goodix_fp/screen_state";
     private static final String GOODIX_CONTROL_PATH = "/sys/devices/soc/soc:goodix_fp/proximity_state";
 
     private static final int GESTURE_CIRCLE_SCANCODE = 250;
@@ -307,7 +307,7 @@ public class KeyHandler implements DeviceKeyHandler {
          public void onReceive(Context context, Intent intent) {
              if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
                  mDispOn = true;
-                 onDisplayOn();
+                 onDisplayOn(context);
              } else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
                  mDispOn = false;
                  onDisplayOff();
@@ -332,11 +332,6 @@ public class KeyHandler implements DeviceKeyHandler {
         IntentFilter screenStateFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         screenStateFilter.addAction(Intent.ACTION_SCREEN_OFF);
         mContext.registerReceiver(mScreenStateReceiver, screenStateFilter);
-        isOPCameraAvail = PackageUtils.isAvailableApp("com.oneplus.camera", context);
-        if ((mClientObserver == null) && (isOPCameraAvail)) {
-            mClientObserver = new ClientPackageNameObserver(CLIENT_PACKAGE_PATH);
-            mClientObserver.startWatching();
-        }
         mSysUiContext = ActivityThread.currentActivityThread().getSystemUiContext();
         mResContext = getPackageContext(mContext, "org.omnirom.device");
     }
@@ -483,7 +478,7 @@ public class KeyHandler implements DeviceKeyHandler {
         }
     }
 
-    private void onDisplayOn() {
+    private void onDisplayOn(Context context) {    
         if (DEBUG) Log.i(TAG, "Display on");
         if (enableProxiSensor()) {
             mSensorManager.unregisterListener(mProximitySensor, mPocketSensor);
@@ -492,8 +487,12 @@ public class KeyHandler implements DeviceKeyHandler {
         if (mUseTiltCheck) {
             mSensorManager.unregisterListener(mTiltSensorListener, mTiltSensor);
         }
-
-    }
+		isOPCameraAvail = PackageUtils.isAvailableApp("com.oneplus.camera", context);
+        if ((mClientObserver == null) && (isOPCameraAvail)) {
+            mClientObserver = new ClientPackageNameObserver(CLIENT_PACKAGE_PATH);
+            mClientObserver.startWatching();
+        }
+   }
 
     private void enableGoodix() {
         if (sIsguacamoleb) {
