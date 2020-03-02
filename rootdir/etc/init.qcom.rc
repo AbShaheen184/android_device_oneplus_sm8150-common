@@ -79,6 +79,15 @@ on post-fs
 
 # Vibrator
     chown system system /sys/devices/platform/soc/89c000.i2c/i2c-2/2-005a/leds/vibrator/level
+
+    chmod 0660 /sys/devices/soc/soc:fpc_fpc1020/proximity_state
+    chown system system /sys/devices/soc/soc:fpc_fpc1020/proximity_state
+
+    chmod 0660 /sys/devices/soc/soc:fpc_fpc1020/key_disable
+    chown system system /sys/devices/soc/soc:fpc_fpc1020/key_disable
+
+    chmod 0660 /sys/devices/platform/soc/soc:goodix_fp/proximity_state
+    chown system system /sys/devices/platform/soc/soc:goodix_fp/proximity_state
 	
 on early-boot
     # set RLIMIT_MEMLOCK to 64MB
@@ -213,7 +222,7 @@ on boot
     # an ack packet comes out of order
     write /proc/sys/net/netfilter/nf_conntrack_tcp_be_liberal 1
 
-    # Set the console loglevel to < KERN_INFO
+    # Set the console loglevel to < KERN_INFO >
     # Set the default message loglevel to KERN_INFO
     write /proc/sys/kernel/printk "6 6 1 7"
 
@@ -1159,6 +1168,17 @@ service vendor.audio-hal-2-0 /vendor/bin/hw/android.hardware.audio@2.0-service
     interface android.hardware.audio@5.0::IDevicesFactory default
     interface android.hardware.audio@4.0::IDevicesFactory default
     interface android.hardware.audio@2.0::IDevicesFactory default
+
+
+
+
+on post-fs
+    # Vibrator
+    #chown system system /sys/class/timed_output/vibrator/vtg_default
+    #chown system system /sys/class/timed_output/vibrator/vtg_level
+    #chown system system /sys/class/timed_output/vibrator/vtg_max
+    #chown system system /sys/class/timed_output/vibrator/vtg_min
+    chown system system /sys/class/leds/vibrator/vmax_mv_user
 
 service dashd /sbin/dashd
     class core
