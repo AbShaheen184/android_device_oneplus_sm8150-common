@@ -89,5 +89,17 @@
     <!-- The CPU temperature divider, if needed -->
     <integer name="config_cpuTempDivider" translatable="false">1000</integer>
 
+    <!-- Ambient music: allow disable dt2skiptrack on Soli devices -->
+    <bool name="config_has_Soli">true</bool>
+
+    <!-- Ambient wake gestures -->
+    <bool name="config_supportAmbientWakeGestures">true</bool>
+
+	<!-- Whether to enable doze always on -->
+	<bool name="config_enableDozeAlwaysOn">true</bool>
+
+	<!-- Whether device supports an alt. ambient display -->
+	<bool name="config_alt_ambient_display">true</bool>
+
 
 </resources>
