@@ -9,6 +9,7 @@ BUILD_BROKEN_DUP_RULES := true
 BOARD_VENDOR := oneplus
 
 VENDOR_PATH := device/oneplus/sm8150-common
+TEMPORARY_DISABLE_PATH_RESTRICTIONS=true
 
 # Architecture
 TARGET_ARCH := arm64
