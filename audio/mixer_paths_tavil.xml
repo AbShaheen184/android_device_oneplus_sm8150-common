@@ -473,7 +473,7 @@
 
     <ctl name="AMIC4_5 SEL" value="AMIC4" />
     <!-- CDC_IF and SLIM controls -->
-    <ctl name="SLIM RX0 MUX" value="ZERO" />
+    <ctl name="SLIM RX0 MUX" value="AIF1_PB" />
     <ctl name="SLIM RX1 MUX" value="ZERO" />
     <ctl name="SLIM RX2 MUX" value="ZERO" />
     <ctl name="SLIM RX3 MUX" value="ZERO" />
@@ -503,7 +503,7 @@
     <ctl name="CDC_IF TX13 MUX" value="ZERO" />
 
     <!-- Interpolator chain controls -->
-    <ctl name="RX INT0_1 MIX1 INP0" value="ZERO" />
+    <ctl name="RX INT0_1 MIX1 INP0" value="RX0" />
     <ctl name="RX INT0_1 MIX1 INP1" value="ZERO" />
     <ctl name="RX INT0_1 MIX1 INP2" value="ZERO" />
     <ctl name="RX INT1_1 MIX1 INP0" value="ZERO" />
@@ -2559,8 +2559,18 @@
         <ctl name="DMIC MUX7" value="DMIC5" />
         <ctl name="IIR0 INP0 MUX" value="DEC7" />
     </path>
+	
+	<path name="ear">
+        <ctl name="SLIM RX0 MUX" value="AIF1_PB" />
+        <ctl name="CDC_IF RX0 MUX" value="SLIM RX0" />
+        <ctl name="SLIM_0_RX Channels" value="One" />
+        <ctl name="RX INT0_1 MIX1 INP0" value="RX0" />
+        <ctl name="RX INT0 DEM MUX" value="CLSH_DSM_OUT" />
+        <ctl name="EAR PA Gain" value="G_6_DB" />
+    </path>
 
     <path name="speaker">
+	<ctl name="RX0 Digital Volume" value="89" />
 <!-- #ifdef VENDOR_EDIT-->
 <!--        <ctl name="SLIM RX0 MUX" value="AIF1_PB" /> -->
 <!--        <ctl name="CDC_IF RX0 MUX" value="SLIM RX0" /> -->
@@ -2947,10 +2957,12 @@
         <!-- #endif VENDOR_EDIT-->
         <ctl name="RX INT1_2 MUX" value="RX2" />
         <ctl name="RX INT2_2 MUX" value="RX3" />
-        <!-- #ifdef VENDOR_EDIT-->
-        <ctl name="RX1 Mix Digital Volume" value="80" />
-        <ctl name="RX2 Mix Digital Volume" value="80" />
-        <!-- #endif VENDOR_EDIT-->
+        <ctl name="RX INT1 DEM MUX" value="CLSH_DSM_OUT" />
+        <ctl name="RX INT2 DEM MUX" value="CLSH_DSM_OUT" />
+        <ctl name="RX1 Mix Digital Volume" value="90" />
+        <ctl name="RX2 Mix Digital Volume" value="90" />
+        <ctl name="HPHL Volume" value="20" />
+        <ctl name="HPHR Volume" value="20" />
     </path>
 
     <path name="headphones-44.1">
@@ -2966,8 +2978,8 @@
         <ctl name="RX INT1_1 NATIVE MUX" value="ON" />
         <ctl name="RX INT2_1 NATIVE MUX" value="ON" />
         <!-- #ifdef VENDOR_EDIT-->
-        <ctl name="RX1 Digital Volume" value="80" />
-        <ctl name="RX2 Digital Volume" value="80" />
+        <ctl name="RX1 Digital Volume" value="90" />
+        <ctl name="RX2 Digital Volume" value="90" />
         <!-- #endif VENDOR_EDIT-->
     </path>
 
@@ -3015,7 +3027,7 @@
 
     <path name="headset-mic">
         <path name="amic2" />
-        <ctl name="DEC0 Volume" value="84" />
+        <ctl name="DEC0 Volume" value="96" />
     </path>
 
     <path name="headset-mic-liquid">
@@ -3100,6 +3112,11 @@
 
     <path name="voice-headset">
         <path name="headphones" />
+        <ctl name="RX HPH Mode" value="CLS_H_LP" />
+        <ctl name="RX1 Mix Digital Volume" value="90" />
+        <ctl name="RX2 Mix Digital Volume" value="90" />
+        <ctl name="HPHL Volume" value="20" />
+        <ctl name="HPHR Volume" value="20" />
     </path>
 
     <path name="voice-line">
@@ -3112,7 +3129,7 @@
 
     <path name="voice-headset-mic-qrd">
         <path name="amic2" />
-        <ctl name="DEC0 Volume" value="84" />
+        <ctl name="DEC0 Volume" value="86" />
     </path>
 
     <path name="speaker-and-headphones">
@@ -3244,7 +3261,7 @@
 
     <path name="aanc-path">
         <ctl name="ADC MUX10" value="DMIC" />
-        <ctl name="DMIC MUX10" value="DMIC5" />
+        <ctl name="DMIC MUX10" value="DMIC4" />
         <ctl name="ANC0 FB MUX" value="ANC_IN_EAR_SPKR" />
     </path>
 
@@ -3282,9 +3299,9 @@
         <ctl name="ADC MUX7" value="DMIC" />
         <ctl name="DMIC MUX7" value="DMIC0" />
         <ctl name="IIR0 INP0 MUX" value="DEC6" />
-        <ctl name="DEC6 Volume" value="84" />
-        <ctl name="DEC8 Volume" value="84" />
-        <ctl name="DEC7 Volume" value="84" />
+        <ctl name="DEC6 Volume" value="96" />
+        <ctl name="DEC8 Volume" value="96" />
+        <ctl name="DEC7 Volume" value="96" />
     </path>
 
     <!-- Dual MIC devices -->
@@ -3313,8 +3330,8 @@
         <ctl name="CDC_IF TX6 MUX" value="DEC6" />
         <ctl name="ADC MUX6" value="AMIC" />
         <ctl name="AMIC MUX6" value="ADC3" />
-        <ctl name="DEC5 Volume" value="90" />
-        <ctl name="DEC6 Volume" value="90" />
+        <ctl name="DEC5 Volume" value="96" />
+        <ctl name="DEC6 Volume" value="96" />
         <ctl name="ADC3 Volume" value="6" />
         <ctl name="ADC4 Volume" value="6" />
     </path>
@@ -3330,8 +3347,8 @@
         <ctl name="CDC_IF TX6 MUX" value="DEC6" />
         <ctl name="ADC MUX6" value="AMIC" />
         <ctl name="AMIC MUX6" value="ADC3" />
-        <ctl name="DEC5 Volume" value="90" />
-        <ctl name="DEC6 Volume" value="90" />
+        <ctl name="DEC5 Volume" value="96" />
+        <ctl name="DEC6 Volume" value="96" />
         <ctl name="ADC3 Volume" value="6" />
         <ctl name="ADC4 Volume" value="6" />
     </path>
@@ -3781,8 +3798,8 @@
 <!-- ifdef VENDOR_EDIT -->
         <ctl name="HPHL Volume" value="3" />
         <ctl name="HPHR Volume" value="3" />
-        <ctl name="RX1 Mix Digital Volume" value="82" />
-        <ctl name="RX2 Mix Digital Volume" value="82" />
+        <ctl name="RX1 Mix Digital Volume" value="90" />
+        <ctl name="RX2 Mix Digital Volume" value="90" />
 <!-- endif -->
     </path>
 
@@ -3797,8 +3814,8 @@
 <!-- ifdef VENDOR_EDIT -->
         <ctl name="HPHL Volume" value="3" />
         <ctl name="HPHR Volume" value="3" />
-        <ctl name="RX1 Mix Digital Volume" value="82" />
-        <ctl name="RX2 Mix Digital Volume" value="82" />
+        <ctl name="RX1 Mix Digital Volume" value="90" />
+        <ctl name="RX2 Mix Digital Volume" value="90" />
 <!-- endif -->
     </path>
 
