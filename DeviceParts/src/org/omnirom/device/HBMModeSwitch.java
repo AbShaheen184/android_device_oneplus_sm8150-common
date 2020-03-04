@@ -28,7 +28,6 @@ import org.omnirom.device.DeviceSettings;
 
 public class HBMModeSwitch implements OnPreferenceChangeListener {
 
-    private static final String FILE = "/sys/devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/card0-DSI-1/hbm";
     private static final String FILE = "/sys/class/drm/card0-DSI-1/hbm";
 
     public static final String SETTINGS_KEY = DeviceSettings.KEY_SETTINGS_PREFIX + DeviceSettings.KEY_HBM_SWITCH;

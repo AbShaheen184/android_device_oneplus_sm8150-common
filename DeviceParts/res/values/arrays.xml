@@ -18,14 +18,8 @@
         <item>@string/slider_mode_off</item>
         <item>@string/slider_mode_vibrate</item>
         <item>@string/slider_mode_silent</item>
-
-        <item>@string/slider_mode_dnd</item>
-        <item>@string/slider_mode_flashlight</item>
-
-
         <item>@string/slider_mode_zen</item>
         <item>@string/slider_mode_flashlight</item>
-
     </string-array>
 
     <string-array name="slider_key_action_values" translatable="false">

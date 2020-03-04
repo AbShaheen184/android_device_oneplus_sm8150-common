@@ -14,9 +14,6 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-
-<resources></resources>
-
 <resources>
     <string name="app_name">Oneplus 5</string>
     <string name="category_gestures_title">Cihaz hareketleri</string>
@@ -76,4 +73,3 @@
     <string name="tile_hbm_mode">Yüksek parlaklık modları</string>
     <string name="wake_entry">Uyanma</string>
 </resources>
-

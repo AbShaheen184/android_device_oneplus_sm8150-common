@@ -25,9 +25,6 @@ import androidx.preference.PreferenceManager;
 
 import org.omnirom.device.DeviceSettings;
 
-public class SRGBModeSwitch implements OnPreferenceChangeListener {
-
-    private static final String FILE = "/sys/devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/card0-DSI-1/native_display_srgb_color_mode";
 public class SRGBModeSwitch {
 
     private static final String FILE = "/sys/class/drm/card0-DSI-1/native_display_srgb_color_mode";
@@ -47,12 +44,5 @@ public class SRGBModeSwitch {
 
     public static boolean isCurrentlyEnabled(Context context) {
         return Utils.getFileValueAsBoolean(getFile(), false);
-    }
-
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        Boolean enabled = (Boolean) newValue;
-        Utils.writeValue(getFile(), enabled ? "1" : "0");
-        return true;
     }
 }

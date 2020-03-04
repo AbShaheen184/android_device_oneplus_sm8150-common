@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-
     package="org.omnirom.device"
     android:sharedUserId="android.uid.system" >
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -64,16 +63,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.settings.Settings$SwipeToNotificationSuggestionActivity"
-            android:exported="true"
-            android:label="@string/fp_swipe_down_switch_title_head"
-            android:launchMode="singleTask" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name="org.omnirom.device.PanelSettingsActivity"
             android:exported="true"
             android:label="@string/panel_category_title"
@@ -108,14 +97,6 @@
                     android:name="android.service.quicksettings.action.QS_TILE"/>
             </intent-filter>
         </service>
-        <service
-            android:name="org.omnirom.device.FPSInfoService"
-            android:exported="false">
-        </service>
-        <service
-            android:name=".FPSTileService"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/fps_info_title"
                 <service
             android:name="org.omnirom.device.RefreshRateTileService"
             android:icon="@drawable/ic_refresh_tile_60"

@@ -1,15 +1,12 @@
 LOCAL_PATH := $(call my-dir)
-ifeq ($(TARGET_DEVICE),$(filter $(TARGET_DEVICE),guacamoleb))
-ifeq ($(TARGET_DEVICE),$(filter $(TARGET_DEVICE),oneplus7 oneplus7pro oneplus7t oneplus7tpro))
+ifeq ($(TARGET_DEVICE),$(filter $(TARGET_DEVICE),guacamoleb oneplus7 oneplus7pro oneplus7t oneplus7tpro))
 include $(CLEAR_VARS)
 
 LOCAL_MODULE_TAGS := optional
 LOCAL_STATIC_ANDROID_LIBRARIES := \
-
-    androidx.appcompat_appcompat
     androidx.core_core \
+    androidx.appcompat_appcompat \
     androidx.preference_preference
-
 
 LOCAL_SRC_FILES := $(call all-java-files-under, src)
 LOCAL_PACKAGE_NAME := DeviceParts
@@ -19,8 +16,6 @@ LOCAL_PRODUCT_MODULE := true
 LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/res
 LOCAL_USE_AAPT2 := true
 LOCAL_PRIVATE_PLATFORM_APIS := true
-LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/res
-LOCAL_USE_AAPT2 := true
 
 package_resource_overlays := $(strip \
     $(wildcard $(foreach dir, $(PRODUCT_PACKAGE_OVERLAYS), \
@@ -39,7 +34,6 @@ LOCAL_PROGUARD_ENABLED := disabled
 LOCAL_DEX_PREOPT := false
 
 include frameworks/base/packages/SettingsLib/common.mk
-include packages/apps/OmniLib/common.mk
 
 include $(BUILD_PACKAGE)
 

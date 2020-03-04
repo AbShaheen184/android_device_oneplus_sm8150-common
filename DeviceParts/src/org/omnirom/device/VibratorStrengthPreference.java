@@ -19,9 +19,6 @@ package org.omnirom.device;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.SharedPreferences;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 import android.database.ContentObserver;
@@ -30,8 +27,6 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.Button;
 import android.os.Bundle;
-import android.util.Log;
-import android.os.Vibrator;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.Log;
@@ -45,9 +40,6 @@ public class VibratorStrengthPreference extends Preference implements
     private int mMaxValue;
     private Vibrator mVibrator;
 
-    private static final String FILE_LEVEL = "/sys/devices/virtual/timed_output/vibrator/vtg_level";
-    private static final long testVibrationPattern[] = {0,250};
-
     private static final String FILE_LEVEL = "/sys/devices/platform/soc/89c000.i2c/i2c-2/2-005a/leds/vibrator/level";
     private static final long testVibrationPattern[] = {0,250};
     public static final String SETTINGS_KEY = DeviceSettings.KEY_SETTINGS_PREFIX + DeviceSettings.KEY_VIBSTRENGTH;
@@ -58,8 +50,6 @@ public class VibratorStrengthPreference extends Preference implements
         // from drivers/platform/msm/qpnp-haptic.c
         // #define QPNP_HAP_VMAX_MIN_MV		116
         // #define QPNP_HAP_VMAX_MAX_MV		3596
-        mMinValue = 116;
-        mMaxValue = 3596;
         mMinValue = 1;
         mMaxValue = 3;
 
@@ -82,19 +72,6 @@ public class VibratorStrengthPreference extends Preference implements
         return Utils.fileWritable(FILE_LEVEL);
     }
 
-	public static String getValue(Context context) {
-		return Utils.getFileValue(FILE_LEVEL, "2700");
-	}
-
-	private void setValue(String newValue, boolean withFeedback) {
-	    Utils.writeValue(FILE_LEVEL, newValue);
-        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
-        editor.putString(DeviceSettings.KEY_VIBSTRENGTH, newValue);
-        editor.commit();
-	    if (withFeedback) {
-            mVibrator.vibrate(testVibrationPattern, -1);
-        }
-	}
     public static String getValue(Context context) {
         String val = Utils.getFileValue(FILE_LEVEL, DEFAULT_VALUE);
         return val;
@@ -112,8 +89,6 @@ public class VibratorStrengthPreference extends Preference implements
         if (!isSupported()) {
             return;
         }
-
-        String storedValue = PreferenceManager.getDefaultSharedPreferences(context).getString(DeviceSettings.KEY_VIBSTRENGTH, "2700"); 
         String storedValue = Settings.System.getString(context.getContentResolver(), SETTINGS_KEY);
         if (storedValue == null) {
             storedValue = DEFAULT_VALUE;

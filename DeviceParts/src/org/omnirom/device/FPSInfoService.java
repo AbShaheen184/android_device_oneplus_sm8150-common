@@ -109,11 +109,7 @@ public class FPSInfoService extends Service {
             float descent = mOnlinePaint.descent();
             mFH = (int)(descent - mAscent + .5f);
 
-
-            final String maxWidthStr="60.1";
-
             final String maxWidthStr="fps: 60.1";
-
             mMaxWidth = (int)mOnlinePaint.measureText(maxWidthStr);
 
             updateDisplay();

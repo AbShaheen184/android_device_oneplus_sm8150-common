@@ -28,6 +28,7 @@ import androidx.preference.PreferenceManager;
 @TargetApi(24)
 public class HBMModeTileService extends TileService {
     private boolean enabled = false;
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -62,7 +63,6 @@ public class HBMModeTileService extends TileService {
         super.onClick();
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         enabled = HBMModeSwitch.isCurrentlyEnabled(this);
-        Utils.writeValue(HBMModeSwitch.getFile(), enabled ? "5" : "1");
         Utils.writeValue(HBMModeSwitch.getFile(), enabled ? "0" : "5");
         sharedPrefs.edit().putBoolean(DeviceSettings.KEY_HBM_SWITCH, enabled ? false : true).commit();
         //getQsTile().setLabel(enabled ? "HBM off" : "HBM On");

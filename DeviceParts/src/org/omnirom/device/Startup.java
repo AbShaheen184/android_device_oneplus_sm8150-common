@@ -26,20 +26,6 @@ import android.provider.Settings;
 import android.text.TextUtils;
 
 public class Startup extends BroadcastReceiver {
-
-    private static final boolean sIsguacamoleb = android.os.Build.DEVICE.equals("guacamoleb");
-
-    private void restore(String file, boolean enabled) {
-        if (file == null) {
-            return;
-        }
-        if (enabled) {
-            Utils.writeValue(file, "1");
-        }
-    }
-
-    private void restore(String file, String value) {
-
     private static final boolean sIsOnePlus7pro = android.os.Build.DEVICE.equals("oneplus7pro");
     private static final boolean sIsOnePlus7tpro = android.os.Build.DEVICE.equals("oneplus7tpro");
 
@@ -57,13 +43,6 @@ public class Startup extends BroadcastReceiver {
         Utils.writeValue(file, value);
     }
 
-    private String getGestureFile(String key) {
-        return GestureSettings.getGestureFile(key);
-    }
-
-    @Override
-    public void onReceive(final Context context, final Intent bootintent) {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
     private static String getGestureFile(String key) {
         return GestureSettings.getGestureFile(key);
     }
@@ -126,12 +105,6 @@ public class Startup extends BroadcastReceiver {
             Settings.System.putString(context.getContentResolver(), mapping, value);
         }
         boolean enabled = !value.equals(AppSelectListPreference.DISABLED_ENTRY);
-        restore(getGestureFile(GestureSettings.KEY_DOUBLE_SWIPE_APP), enabled);
-
-        enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_FPS_INFO, false);
-        if (enabled) {
-            context.startService(new Intent(context, FPSInfoService.class));
-        }
         restore(getGestureFile(GestureSettings.KEY_GESTURE_TWO_SWIPE_DOWN_APP), enabled);
 
         // circle -> camera
@@ -144,26 +117,17 @@ public class Startup extends BroadcastReceiver {
         enabled = !value.equals(AppSelectListPreference.DISABLED_ENTRY);
         restore(getGestureFile(GestureSettings.KEY_CIRCLE_APP), enabled);
 
-        // down arrow -> flashlight
-        mapping = GestureSettings.DEVICE_GESTURE_MAPPING_2;
-        value = Settings.System.getString(context.getContentResolver(), mapping);
         // up arrow
         mapping = GestureSettings.DEVICE_GESTURE_MAPPING_2;
         if (TextUtils.isEmpty(value)) {
             value = AppSelectListPreference.TORCH_ENTRY;
             Settings.System.putString(context.getContentResolver(), mapping, value);
         }
-        enabled = !value.equals(AppSelectListPreference.DISABLED_ENTRY);
-        restore(getGestureFile(GestureSettings.KEY_DOWN_ARROW_APP), enabled);
-
-        // up arrow
-        value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_3);
         value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_2);
         enabled = !TextUtils.isEmpty(value) && !value.equals(AppSelectListPreference.DISABLED_ENTRY);
         restore(getGestureFile(GestureSettings.KEY_UP_ARROW_APP), enabled);
 
         // left arrow -> music prev
-        mapping = GestureSettings.DEVICE_GESTURE_MAPPING_4;
         mapping = GestureSettings.DEVICE_GESTURE_MAPPING_3;
         value = Settings.System.getString(context.getContentResolver(), mapping);
         if (TextUtils.isEmpty(value)) {
@@ -174,7 +138,6 @@ public class Startup extends BroadcastReceiver {
         restore(getGestureFile(GestureSettings.KEY_LEFT_ARROW_APP), enabled);
 
         // right arrow -> music next
-        mapping = GestureSettings.DEVICE_GESTURE_MAPPING_5;
         mapping = GestureSettings.DEVICE_GESTURE_MAPPING_4;
         value = Settings.System.getString(context.getContentResolver(), mapping);
         if (TextUtils.isEmpty(value)) {
@@ -185,67 +148,6 @@ public class Startup extends BroadcastReceiver {
         restore(getGestureFile(GestureSettings.KEY_RIGHT_ARROW_APP), enabled);
 
         // down swipe
-        value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_6);
-        enabled = !TextUtils.isEmpty(value) && !value.equals(AppSelectListPreference.DISABLED_ENTRY);
-        restore(getGestureFile(GestureSettings.KEY_DOWN_SWIPE_APP), enabled);
-
-        // up swipe
-        value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_7);
-        enabled = !TextUtils.isEmpty(value) && !value.equals(AppSelectListPreference.DISABLED_ENTRY);
-        restore(getGestureFile(GestureSettings.KEY_UP_SWIPE_APP), enabled);
-
-        // left swipe
-        value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_8);
-        enabled = !TextUtils.isEmpty(value) && !value.equals(AppSelectListPreference.DISABLED_ENTRY);
-        restore(getGestureFile(GestureSettings.KEY_LEFT_SWIPE_APP), enabled);
-
-        // right swipe
-        value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_9);
-        enabled = !TextUtils.isEmpty(value) && !value.equals(AppSelectListPreference.DISABLED_ENTRY);
-        restore(getGestureFile(GestureSettings.KEY_RIGHT_SWIPE_APP), enabled);
-
-        // fp down swipe
-        value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_10);
-        enabled = !TextUtils.isEmpty(value) && !value.equals(AppSelectListPreference.DISABLED_ENTRY);
-        restore(getGestureFile(GestureSettings.FP_GESTURE_SWIPE_DOWN_APP), enabled);
-
-        // fp up swipe
-        value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_11);
-        enabled = !TextUtils.isEmpty(value) && !value.equals(AppSelectListPreference.DISABLED_ENTRY);
-        restore(getGestureFile(GestureSettings.FP_GESTURE_SWIPE_UP_APP), enabled);
-
-        // fp right swipe
-        value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_12);
-        enabled = !TextUtils.isEmpty(value) && !value.equals(AppSelectListPreference.DISABLED_ENTRY);
-        restore(getGestureFile(GestureSettings.FP_GESTURE_SWIPE_RIGHT_APP), enabled);
-
-        // fp left swipe
-        value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_13);
-        enabled = !TextUtils.isEmpty(value) && !value.equals(AppSelectListPreference.DISABLED_ENTRY);
-        restore(getGestureFile(GestureSettings.FP_GESTURE_SWIPE_LEFT_APP), enabled);
-
-        // fp long press
-        value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_14);
-        enabled = !TextUtils.isEmpty(value) && !value.equals(AppSelectListPreference.DISABLED_ENTRY);
-        restore(getGestureFile(GestureSettings.FP_GESTURE_LONG_PRESS_APP), enabled);
-
-        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_SRGB_SWITCH, false);
-        restore(SRGBModeSwitch.getFile(), enabled);
-        enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_HBM_SWITCH, false);
-        restore(HBMModeSwitch.getFile(), enabled);
-        enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_DCI_SWITCH, false);
-        restore(DCIModeSwitch.getFile(), enabled);
-        enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_NIGHT_SWITCH, false);
-        restore(NightModeSwitch.getFile(), enabled);
-        enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_ADAPTIVE_SWITCH, false);
-        restore(AdaptiveModeSwitch.getFile(), enabled);
-        enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_ONEPLUS_SWITCH, false);
-        restore(OnePlusModeSwitch.getFile(), enabled);
-
-        enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_HWK_SWITCH, false);
-        restore(HWKSwitch.getFile(), enabled);
-
         value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_5);
         enabled = !TextUtils.isEmpty(value) && !value.equals(AppSelectListPreference.DISABLED_ENTRY);
         restore(getGestureFile(GestureSettings.KEY_GESTURE_M_APP), enabled);
@@ -287,7 +189,6 @@ public class Startup extends BroadcastReceiver {
 
         enabled = Settings.System.getInt(context.getContentResolver(), UsbOtgSwitch.SETTINGS_KEY, 0) != 0;
         restore(UsbOtgSwitch.getFile(), enabled);
-
 
         VibratorStrengthPreference.restore(context);
     }
