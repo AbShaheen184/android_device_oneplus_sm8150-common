@@ -14,8 +14,12 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
+
 <resources>
   <string name="advanced_settings">Lisäasetukset</string>
   <string name="buttons_title">Näppäimet</string>
   <string name="torch_entry">Taskulamppu</string>
 </resources>
+
+<resources></resources>
+

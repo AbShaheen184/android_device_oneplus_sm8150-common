@@ -14,7 +14,11 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
+
 <resources>
   <string name="category_slider">Glidebryter</string>
   <string name="slider_mode_title">Glidebrytermodus</string>
 </resources>
+
+<resources></resources>
+

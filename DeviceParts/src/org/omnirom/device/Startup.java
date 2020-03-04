@@ -39,6 +39,18 @@ public class Startup extends BroadcastReceiver {
     }
 
     private void restore(String file, String value) {
+
+    private static final boolean sIsOnePlus7pro = android.os.Build.DEVICE.equals("oneplus7pro");
+    private static final boolean sIsOnePlus7tpro = android.os.Build.DEVICE.equals("oneplus7tpro");
+
+    private static void restore(String file, boolean enabled) {
+        if (file == null) {
+            return;
+        }
+        Utils.writeValue(file, enabled ? "1" : "0");
+    }
+
+    private static void restore(String file, String value) {
         if (file == null) {
             return;
         }
@@ -52,6 +64,60 @@ public class Startup extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, final Intent bootintent) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+    private static String getGestureFile(String key) {
+        return GestureSettings.getGestureFile(key);
+    }
+
+    private void maybeImportOldSettings(Context context) {
+        boolean imported = Settings.System.getInt(context.getContentResolver(), "omni_device_setting_imported", 0) != 0;
+        if (!imported) {
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+            boolean enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_SRGB_SWITCH, false);
+            Settings.System.putInt(context.getContentResolver(), SRGBModeSwitch.SETTINGS_KEY, enabled ? 1 : 0);
+
+            enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_HBM_SWITCH, false);
+            Settings.System.putInt(context.getContentResolver(), HBMModeSwitch.SETTINGS_KEY, enabled ? 1 : 0);
+
+            enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_DCD_SWITCH, false);
+            Settings.System.putInt(context.getContentResolver(), DCDModeSwitch.SETTINGS_KEY, enabled ? 1 : 0);
+
+            enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_DCI_SWITCH, false);
+            Settings.System.putInt(context.getContentResolver(), DCIModeSwitch.SETTINGS_KEY, enabled ? 1 : 0);
+
+            enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_NIGHT_SWITCH, false);
+            Settings.System.putInt(context.getContentResolver(), NightModeSwitch.SETTINGS_KEY, enabled ? 1 : 0);
+
+            enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_OTG_SWITCH, false);
+            Settings.System.putInt(context.getContentResolver(), UsbOtgSwitch.SETTINGS_KEY, enabled ? 1 : 0);
+
+            enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_REFRESH_RATE, false);
+            Settings.System.putFloat(context.getContentResolver(), Settings.System.PEAK_REFRESH_RATE, enabled ? 90f : 60f);
+
+            enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_AUTO_REFRESH_RATE, false);
+            Settings.System.putInt(context.getContentResolver(), AutoRefreshRateSwitch.SETTINGS_KEY, enabled ? 1 : 0);
+
+            String vibrStrength = sharedPrefs.getString(DeviceSettings.KEY_VIBSTRENGTH, VibratorStrengthPreference.DEFAULT_VALUE); 
+            Settings.System.putString(context.getContentResolver(), VibratorStrengthPreference.SETTINGS_KEY, vibrStrength);
+
+            Settings.System.putInt(context.getContentResolver(), "omni_device_setting_imported", 1);
+        }
+    }
+
+    @Override
+    public void onReceive(final Context context, final Intent bootintent) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        maybeImportOldSettings(context);
+        restoreAfterUserSwitch(context);
+        if (sIsOnePlus7pro || sIsOnePlus7tpro) {
+            context.startService(new Intent(context, FallSensorService.class));
+        }
+        boolean enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_FPS_INFO, false);
+        if (enabled) {
+            context.startService(new Intent(context, FPSInfoService.class));
+        }
+    }
+
+    public static void restoreAfterUserSwitch(Context context) {
         // double swipe -> music play
         String mapping = GestureSettings.DEVICE_GESTURE_MAPPING_0;
         String value = Settings.System.getString(context.getContentResolver(), mapping);
@@ -66,6 +132,7 @@ public class Startup extends BroadcastReceiver {
         if (enabled) {
             context.startService(new Intent(context, FPSInfoService.class));
         }
+        restore(getGestureFile(GestureSettings.KEY_GESTURE_TWO_SWIPE_DOWN_APP), enabled);
 
         // circle -> camera
         mapping = GestureSettings.DEVICE_GESTURE_MAPPING_1;
@@ -80,6 +147,8 @@ public class Startup extends BroadcastReceiver {
         // down arrow -> flashlight
         mapping = GestureSettings.DEVICE_GESTURE_MAPPING_2;
         value = Settings.System.getString(context.getContentResolver(), mapping);
+        // up arrow
+        mapping = GestureSettings.DEVICE_GESTURE_MAPPING_2;
         if (TextUtils.isEmpty(value)) {
             value = AppSelectListPreference.TORCH_ENTRY;
             Settings.System.putString(context.getContentResolver(), mapping, value);
@@ -89,11 +158,13 @@ public class Startup extends BroadcastReceiver {
 
         // up arrow
         value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_3);
+        value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_2);
         enabled = !TextUtils.isEmpty(value) && !value.equals(AppSelectListPreference.DISABLED_ENTRY);
         restore(getGestureFile(GestureSettings.KEY_UP_ARROW_APP), enabled);
 
         // left arrow -> music prev
         mapping = GestureSettings.DEVICE_GESTURE_MAPPING_4;
+        mapping = GestureSettings.DEVICE_GESTURE_MAPPING_3;
         value = Settings.System.getString(context.getContentResolver(), mapping);
         if (TextUtils.isEmpty(value)) {
             value = AppSelectListPreference.MUSIC_PREV_ENTRY;
@@ -104,6 +175,7 @@ public class Startup extends BroadcastReceiver {
 
         // right arrow -> music next
         mapping = GestureSettings.DEVICE_GESTURE_MAPPING_5;
+        mapping = GestureSettings.DEVICE_GESTURE_MAPPING_4;
         value = Settings.System.getString(context.getContentResolver(), mapping);
         if (TextUtils.isEmpty(value)) {
             value = AppSelectListPreference.MUSIC_NEXT_ENTRY;
@@ -173,6 +245,49 @@ public class Startup extends BroadcastReceiver {
 
         enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_HWK_SWITCH, false);
         restore(HWKSwitch.getFile(), enabled);
+
+        value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_5);
+        enabled = !TextUtils.isEmpty(value) && !value.equals(AppSelectListPreference.DISABLED_ENTRY);
+        restore(getGestureFile(GestureSettings.KEY_GESTURE_M_APP), enabled);
+
+        // up swipe
+        value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_6);
+        enabled = !TextUtils.isEmpty(value) && !value.equals(AppSelectListPreference.DISABLED_ENTRY);
+        restore(getGestureFile(GestureSettings.KEY_GESTURE_W_APP), enabled);
+
+        // left swipe
+        value = Settings.System.getString(context.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_7);
+        enabled = !TextUtils.isEmpty(value) && !value.equals(AppSelectListPreference.DISABLED_ENTRY);
+        restore(getGestureFile(GestureSettings.KEY_GESTURE_S_APP), enabled);
+
+        enabled = Settings.System.getInt(context.getContentResolver(), SRGBModeSwitch.SETTINGS_KEY, 0) != 0;
+        if (enabled) {
+            restore(SRGBModeSwitch.getFile(), enabled);
+        }
+        enabled = Settings.System.getInt(context.getContentResolver(), DCDModeSwitch.SETTINGS_KEY, 0) != 0;
+        if (enabled) {
+            restore(DCDModeSwitch.getFile(), enabled);
+        }
+        enabled = Settings.System.getInt(context.getContentResolver(), DCIModeSwitch.SETTINGS_KEY, 0) != 0;
+        if (enabled) {
+            restore(DCIModeSwitch.getFile(), enabled);
+        }
+        enabled = Settings.System.getInt(context.getContentResolver(), WideColorModeSwitch.SETTINGS_KEY, 0) != 0;
+        if (enabled) {
+            restore(WideColorModeSwitch.getFile(), enabled);
+        }
+        enabled = Settings.System.getInt(context.getContentResolver(), NightModeSwitch.SETTINGS_KEY, 0) != 0;
+        if (enabled) {
+            restore(NightModeSwitch.getFile(), enabled);
+        }
+        enabled = Settings.System.getInt(context.getContentResolver(), HBMModeSwitch.SETTINGS_KEY, 0) != 0;
+        if (enabled) {
+            restore(HBMModeSwitch.getFile(), enabled);
+        }
+
+        enabled = Settings.System.getInt(context.getContentResolver(), UsbOtgSwitch.SETTINGS_KEY, 0) != 0;
+        restore(UsbOtgSwitch.getFile(), enabled);
+
 
         VibratorStrengthPreference.restore(context);
     }

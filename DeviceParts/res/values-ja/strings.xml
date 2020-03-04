@@ -14,6 +14,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
+
 <resources>
   <string name="app_name">Oneplus 5</string>
   <string name="category_gestures_title">端末ジェスチャー</string>
@@ -96,3 +97,6 @@
   <string name="tile_hbm_mode">高輝度モード</string>
   <string name="wake_entry">スリープ解除</string>
 </resources>
+
+<resources></resources>
+

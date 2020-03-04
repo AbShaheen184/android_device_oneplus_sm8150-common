@@ -41,9 +41,15 @@ public class Utils {
             fos.flush();
             fos.close();
         } catch (FileNotFoundException e) {
+
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+
+            // ignore
+        } catch (IOException e) {
+            // ignore
+
         }
     }
 

@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2017 The OmniROM Project
+* Copyright (C) 2016 The OmniROM Project
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -19,46 +19,34 @@ package org.omnirom.device;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.SystemProperties;
+import android.provider.Settings;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.PreferenceManager;
+
 import org.omnirom.device.DeviceSettings;
 
+public class AutoRefreshRateSwitch implements OnPreferenceChangeListener {
 
-public class DCIModeSwitch implements OnPreferenceChangeListener {
+    public static final String SETTINGS_KEY = DeviceSettings.KEY_SETTINGS_PREFIX + DeviceSettings.KEY_AUTO_REFRESH_RATE;
+    private Context mContext;
 
-    private static final String FILE = "/sys/devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/card0-DSI-1/native_display_p3_mode";
-
-public class DCIModeSwitch {
-
-    private static final String FILE = "/sys/class/drm/card0-DSI-1/native_display_p3_mode";
-
-    public static final String SETTINGS_KEY = DeviceSettings.KEY_SETTINGS_PREFIX + DeviceSettings.KEY_DCI_SWITCH;
-
-
-    public static String getFile() {
-        if (Utils.fileWritable(FILE)) {
-            return FILE;
-        }
-        return null;
-    }
-
-    public static boolean isSupported() {
-        return Utils.fileWritable(getFile());
+    public AutoRefreshRateSwitch(Context context) {
+        mContext = context;
     }
 
     public static boolean isCurrentlyEnabled(Context context) {
-        return Utils.getFileValueAsBoolean(getFile(), false);
+        return Settings.System.getInt(context.getContentResolver(), SETTINGS_KEY, 1) == 1;
     }
-
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         Boolean enabled = (Boolean) newValue;
-        Utils.writeValue(getFile(), enabled ? "1" : "0");
+        Settings.System.putFloat(mContext.getContentResolver(),
+                Settings.System.PEAK_REFRESH_RATE, 90f);
+        Settings.System.putFloat(mContext.getContentResolver(),
+                Settings.System.MIN_REFRESH_RATE, 60f);
+        Settings.System.putInt(mContext.getContentResolver(), SETTINGS_KEY, enabled ? 1 : 0);
         return true;
     }
-
-
 }

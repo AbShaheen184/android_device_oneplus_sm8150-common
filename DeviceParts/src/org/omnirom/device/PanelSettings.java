@@ -54,6 +54,7 @@ public class PanelSettings extends PreferenceFragment implements RadioGroup.OnCh
     LinearLayout sliderDotspanel;
     private int dotscount;
     private ImageView[] dots;
+    private int mCurrentMode;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -71,6 +72,14 @@ public class PanelSettings extends PreferenceFragment implements RadioGroup.OnCh
         } else if (OnePlusModeSwitch.isCurrentlyEnabled(getContext())) {
             checkedButtonId = R.id.oneplus_mode;
         }
+        if (DCIModeSwitch.isCurrentlyEnabled(getContext())) {
+            checkedButtonId = R.id.dci_mode;
+        } else if (SRGBModeSwitch.isCurrentlyEnabled(getContext())) {
+            checkedButtonId = R.id.srgb_mode;
+        } else if (WideColorModeSwitch.isCurrentlyEnabled(getContext())) {
+            checkedButtonId = R.id.wide_color_mode;
+        }
+        mCurrentMode = checkedButtonId;
         mRadioGroup.check(checkedButtonId);
         mRadioGroup.setOnCheckedChangeListener(this);
     }
@@ -122,6 +131,20 @@ public class PanelSettings extends PreferenceFragment implements RadioGroup.OnCh
             }
         });
 	return rootView;
+        return inflater.inflate(R.layout.panel_modes, container, false);
+    }
+
+    private void disableCurrenMode() {
+        if (mCurrentMode == R.id.srgb_mode) {
+            Utils.writeValue(SRGBModeSwitch.getFile(), "0");
+            Settings.System.putInt(getContext().getContentResolver(), SRGBModeSwitch.SETTINGS_KEY, 0);
+        } else if (mCurrentMode == R.id.dci_mode) {
+            Utils.writeValue(DCIModeSwitch.getFile(), "0");
+            Settings.System.putInt(getContext().getContentResolver(), DCIModeSwitch.SETTINGS_KEY, 0);
+        } else if (mCurrentMode == R.id.wide_color_mode) {
+            Utils.writeValue(WideColorModeSwitch.getFile(), "0");
+            Settings.System.putInt(getContext().getContentResolver(), WideColorModeSwitch.SETTINGS_KEY, 0);
+        }
     }
 
     @Override
@@ -196,5 +219,21 @@ public class PanelSettings extends PreferenceFragment implements RadioGroup.OnCh
             edit.putBoolean(DeviceSettings.KEY_ONEPLUS_SWITCH, true);
         }
         edit.commit();
+        if (checkedId == R.id.srgb_mode) {
+            disableCurrenMode();
+            Utils.writeValue(SRGBModeSwitch.getFile(), "1");
+            Settings.System.putInt(getContext().getContentResolver(), SRGBModeSwitch.SETTINGS_KEY, 1);
+        } else if (checkedId == R.id.dci_mode) {
+            disableCurrenMode();
+            Utils.writeValue(DCIModeSwitch.getFile(), "1");
+            Settings.System.putInt(getContext().getContentResolver(), DCIModeSwitch.SETTINGS_KEY, 1);
+        } else if (checkedId == R.id.off_mode) {
+            disableCurrenMode();
+        } else if (checkedId == R.id.wide_color_mode) {
+            disableCurrenMode();
+            Utils.writeValue(WideColorModeSwitch.getFile(), "1");
+            Settings.System.putInt(getContext().getContentResolver(), WideColorModeSwitch.SETTINGS_KEY, 1);
+        }
+        mCurrentMode = checkedId;
     }
 }

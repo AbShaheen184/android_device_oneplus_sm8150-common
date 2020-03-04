@@ -15,6 +15,7 @@
      limitations under the License.
 -->
 <resources>
+
   <string name="app_name">Oneplus 5</string>
   <string name="category_vibrator">Vibrasiya motoru</string>
   <string name="vib_strength_title_head">Güc</string>
@@ -72,4 +73,7 @@
   <string name="tile_panel_mode">Panel modları</string>
   <string name="tile_hbm_mode">Yüksək işıq modları</string>
   <string name="wake_entry">Oyanma</string>
+
+    <string name="slider_mode_title_center">Orta mövqe</string>
+
 </resources>

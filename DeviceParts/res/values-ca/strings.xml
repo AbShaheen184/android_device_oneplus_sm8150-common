@@ -14,6 +14,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
+
 <resources>
   <string name="app_name">Oneplus 5</string>
   <string name="category_gestures_title">Gests del dispositiu</string>
@@ -96,3 +97,6 @@
   <string name="tile_hbm_mode">Modes de brillantor alta</string>
   <string name="wake_entry">Desperta</string>
 </resources>
+
+<resources></resources>
+

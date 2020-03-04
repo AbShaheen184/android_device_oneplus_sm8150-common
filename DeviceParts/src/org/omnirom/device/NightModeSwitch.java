@@ -29,6 +29,11 @@ import org.omnirom.device.DeviceSettings;
 public class NightModeSwitch implements OnPreferenceChangeListener {
 
     private static final String FILE = "/sys/devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/card0-DSI-1/night_mode";
+public class NightModeSwitch {
+
+    private static final String FILE = "/sys/class/drm/card0-DSI-1/night_mode";
+
+    public static final String SETTINGS_KEY = DeviceSettings.KEY_SETTINGS_PREFIX + DeviceSettings.KEY_NIGHT_SWITCH;
 
     public static String getFile() {
         if (Utils.fileWritable(FILE)) {

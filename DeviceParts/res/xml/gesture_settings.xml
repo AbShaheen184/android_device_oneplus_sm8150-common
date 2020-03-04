@@ -17,6 +17,7 @@
 
     <SwitchPreference
         android:key="proxi"
+
         android:summary="@string/proxi_summary_head"
         android:title="@string/proxi_title_head"
         android:persistent="false"
@@ -36,6 +37,13 @@
                 android:targetPackage="com.android.settings"
                 android:targetClass="com.android.settings.Settings$SwipeToNotificationSuggestionActivity" />
     </Preference>
+
+        android:summary="@string/proxi_summary_head_new"
+        android:title="@string/proxi_title_head"
+        android:persistent="false"
+        android:defaultValue="true" />
+
+
 
     <PreferenceCategory
         android:title="@string/offscreen_gesture_title">
@@ -66,6 +74,7 @@
             android:persistent="false" />
 
         <org.omnirom.device.AppSelectListPreference
+
             android:key="down_arrow_gesture_app"
             android:title="@string/category_down_arrow_gesture"
             android:persistent="false"/>
@@ -118,6 +127,20 @@
         <org.omnirom.device.AppSelectListPreference
             android:key="fp_long_press_gesture_app"
             android:title="@string/category_fp_long_press_gesture"
+
+            android:key="gesture_m_app"
+            android:title="@string/category_s_gesture"
+            android:persistent="false"/>
+
+        <org.omnirom.device.AppSelectListPreference
+            android:key="gesture_w_app"
+            android:title="@string/category_w_gesture"
+            android:persistent="false"/>
+
+        <org.omnirom.device.AppSelectListPreference
+            android:key="gesture_s_app"
+            android:title="@string/category_m_gesture"
+
             android:persistent="false"/>
 
     </PreferenceCategory>

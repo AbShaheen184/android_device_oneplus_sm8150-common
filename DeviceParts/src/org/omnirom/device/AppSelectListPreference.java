@@ -59,6 +59,7 @@ public class AppSelectListPreference extends CustomDialogPreference {
     public static final String MUSIC_PREV_ENTRY = "music_prev";
     public static final String MUSIC_NEXT_ENTRY = "music_next";
     public static final String WAKE_ENTRY = "wake";
+
     public static final String VOLUME_UP_ENTRY = "volume_up";
     public static final String VOLUME_DOWN_ENTRY = "volume_down";
     public static final String BROWSE_SCROLL_DOWN_ENTRY = "browse_scroll_down";
@@ -67,13 +68,20 @@ public class AppSelectListPreference extends CustomDialogPreference {
     public static final String NAVIGATE_HOME_ENTRY = "navigate_home";
     public static final String NAVIGATE_RECENT_ENTRY = "navigate_recent";
 
+    public static final String BROWSE_SCROLL_DOWN_ENTRY = "browse_scroll_down";
+    public static final String BROWSE_SCROLL_UP_ENTRY = "browse_scroll_up";
+
+
     private AppSelectListAdapter mAdapter;
     private Drawable mAppIconDrawable;
     private int mAppIconResourceId;
     private CharSequence mTitle;
     private String mValue;
     private PackageManager mPm;
+
     private static final boolean sIsguacamoleb = android.os.Build.DEVICE.equals("guacamoleb");
+
+
     private List<PackageItem> mInstalledPackages = new LinkedList<PackageItem>();
 
     public static class PackageItem implements Comparable<PackageItem> {
@@ -231,6 +239,7 @@ public class AppSelectListPreference extends CustomDialogPreference {
                 R.drawable.ic_wakeup, WAKE_ENTRY);
         mInstalledPackages.add(0, wakeItem);
 
+
         if (sIsguacamoleb) {
             PackageItem volumeUpItem = new PackageItem(
                     getContext().getResources().getString(R.string.volume_up),
@@ -267,6 +276,8 @@ public class AppSelectListPreference extends CustomDialogPreference {
                         R.drawable.recent, NAVIGATE_RECENT_ENTRY);
                 mInstalledPackages.add(0, navigateRecentItem);
         }
+
+
         PackageItem disabledItem = new PackageItem(getContext().getResources().getString(R.string.disabled_entry),
                 R.drawable.ic_disabled, DISABLED_ENTRY);
         mInstalledPackages.add(0, disabledItem);
@@ -346,6 +357,7 @@ public class AppSelectListPreference extends CustomDialogPreference {
             } else if (name.equals(WAKE_ENTRY)) {
                 mTitle = getContext().getResources().getString(R.string.wake_entry);
                 mAppIconResourceId = R.drawable.ic_wakeup;
+
             } else if (name.equals(VOLUME_UP_ENTRY)) {
                 mTitle = getContext().getResources().getString(R.string.volume_up);
                 mAppIconResourceId = R.drawable.ic_settings_sound;
@@ -367,6 +379,8 @@ public class AppSelectListPreference extends CustomDialogPreference {
             } else if (name.equals(NAVIGATE_RECENT_ENTRY)) {
                 mTitle = getContext().getResources().getString(R.string.navigate_recent);
                 mAppIconResourceId = R.drawable.recent;
+
+
             } else {
                 ComponentName componentName = ComponentName.unflattenFromString(name);
                 PackageItem item = mAdapter.resolveApplication(componentName);
