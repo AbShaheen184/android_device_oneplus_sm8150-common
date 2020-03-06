@@ -99,12 +99,10 @@ public class KeyHandler implements DeviceKeyHandler {
     private static final int HANDWAVE_MAX_DELTA_MS = 1000;
     private static final int POCKET_MIN_DELTA_MS = 5000;
 
-    private static final boolean sIsOnePlus7pro = android.os.Build.DEVICE.equals("oneplus7pro");
-    private static final boolean sIsOnePlus7tpro = android.os.Build.DEVICE.equals("oneplus7tpro");
-    private static final boolean sIsOnePlus7t = android.os.Build.DEVICE.equals("oneplus7t");
+    private static final boolean sIsOnePlus7 = android.os.Build.DEVICE.equals("guacamoleb");
 
     public static final String CLIENT_PACKAGE_NAME = "com.oneplus.camera";
-    public static final String CLIENT_PACKAGE_PATH = "/data/misc/omni/client_package_name";
+    public static final String CLIENT_PACKAGE_PATH = "/data/misc/lineage/client_package_name";
 
     public static final String DYNAMIC_FPS_PATH = "/sys/class/drm/card-DSI-1/dynamic_fps";
 
@@ -332,7 +330,7 @@ public class KeyHandler implements DeviceKeyHandler {
             mClientObserver = new ClientPackageNameObserver(CLIENT_PACKAGE_PATH);
             mClientObserver.startWatching();
         }
-        if (sIsOnePlus7t) {
+        if (sIsOnePlus7) {
             initTriStateHallSensor();
         }
     }
@@ -448,7 +446,7 @@ public class KeyHandler implements DeviceKeyHandler {
             mClientObserver = new ClientPackageNameObserver(CLIENT_PACKAGE_PATH);
             mClientObserver.startWatching();
         }
-        if (sIsOnePlus7pro || sIsOnePlus7tpro) {
+        if (sIsOnePlus7) {
             //mMotorHandler.removeCallbacksAndMessages(mCameraMotorSwitch);
             CameraMotorController.toggleCameraSwitch(true);
         }
@@ -490,7 +488,7 @@ public class KeyHandler implements DeviceKeyHandler {
             mClientObserver.stopWatching();
             mClientObserver = null;
         }
-        if (sIsOnePlus7pro || sIsOnePlus7tpro) {
+        if (sIsOnePlus7) {
             CameraMotorController.toggleCameraSwitch(false);
         }
     }
