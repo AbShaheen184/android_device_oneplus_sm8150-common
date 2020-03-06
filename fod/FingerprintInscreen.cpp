@@ -36,6 +36,7 @@
 // This is not a typo by me. It's by OnePlus.
 #define HBM_ENABLE_PATH "/sys/class/drm/card0-DSI-1/op_friginer_print_hbm"
 #define DIM_AMOUNT_PATH "/sys/class/drm/card0-DSI-1/dim_alpha"
+#define HBM_PATH "/sys/class/drm/card0-DSI-1/hbm"
 
 namespace vendor {
 namespace lineage {
@@ -64,6 +65,7 @@ static T get(const std::string& path, const T& def) {
 }
 
 FingerprintInscreen::FingerprintInscreen() {
+    this->mFodCircleVisible = false;
     this->mVendorFpService = IVendorFingerprintExtensions::getService();
     this->mVendorDisplayService = IOneplusDisplay::getService();
 }
@@ -100,10 +102,13 @@ Return<void> FingerprintInscreen::onRelease() {
 }
 
 Return<void> FingerprintInscreen::onShowFODView() {
+    this->mFodCircleVisible = true;
+
     return Void();
 }
 
 Return<void> FingerprintInscreen::onHideFODView() {
+    this->mFodCircleVisible = false;
     this->mVendorDisplayService->setMode(OP_DISPLAY_AOD_MODE, 0);
     this->mVendorDisplayService->setMode(OP_DISPLAY_SET_DIM, 0);
     set(HBM_ENABLE_PATH, 0);
@@ -119,7 +124,7 @@ Return<bool> FingerprintInscreen::handleAcquired(int32_t acquiredInfo, int32_t v
     }
 
     if (acquiredInfo == FINGERPRINT_ACQUIRED_VENDOR) {
-        if (vendorCode == 0) {
+        if (mFodCircleVisible && vendorCode == 0) {
             Return<void> ret = mCallback->onFingerDown();
             if (!ret.isOk()) {
                 LOG(ERROR) << "FingerDown() error: " << ret.description();
@@ -127,7 +132,7 @@ Return<bool> FingerprintInscreen::handleAcquired(int32_t acquiredInfo, int32_t v
             return true;
         }
 
-        if (vendorCode == 1) {
+        if (mFodCircleVisible && vendorCode == 1) {
             Return<void> ret = mCallback->onFingerUp();
             if (!ret.isOk()) {
                 LOG(ERROR) << "FingerUp() error: " << ret.description();
@@ -152,6 +157,10 @@ Return<void> FingerprintInscreen::setLongPressEnabled(bool enabled) {
 
 Return<int32_t> FingerprintInscreen::getDimAmount(int32_t) {
     int dimAmount = get(DIM_AMOUNT_PATH, 0);
+    int hbmMode = get(HBM_PATH, 0);
+    if (hbmMode == 5) {
+        dimAmount = 42;
+    }
     LOG(INFO) << "dimAmount = " << dimAmount;
 
     return dimAmount;
