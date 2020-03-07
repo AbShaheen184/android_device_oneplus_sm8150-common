@@ -119,4 +119,11 @@
     <string name="fps_info_title">FPS overlay</string>
     <string name="fps_info_summary">Show overlay with with current frames per second</string>
     <string name="panel_mode_info">Disable panel mode requires reboot.</string>
+
+	<!-- Alert slider toast -->
+    <string name="toast_ringer">Ringer</string>
+    <string name="toast_vibrate">Vibrate only</string>
+    <string name="toast_dnd">Do Not Disturb</string>
+    <string name="toast_silent">Silent</string>
+    <string name="toast_flash">Flashlight</string>
 </resources>

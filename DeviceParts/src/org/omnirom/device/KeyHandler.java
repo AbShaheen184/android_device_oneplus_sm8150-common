@@ -19,7 +19,15 @@ package org.omnirom.device;
 
 import static android.provider.Settings.Global.ZEN_MODE_OFF;
 import static android.provider.Settings.Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS;
-
+import org.omnirom.device.R;
+import android.app.ActivityThread;
+import android.content.res.Resources;
+import android.os.Looper;
+import android.view.Gravity;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.widget.Toast;
 import android.app.ActivityManagerNative;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -75,6 +83,7 @@ public class KeyHandler implements DeviceKeyHandler {
     private static final int GESTURE_WAKELOCK_DURATION = 2000;
     private static final String DT2W_CONTROL_PATH = "/proc/touchpanel/double_tap_enable";
     private static final String SINGLE_TAP_CONTROL_PATH = "/proc/touchpanel/single_tap_enable";
+    public static final String PACKAGE_SYSTEMUI = "com.android.systemui";
 
     private static final int GESTURE_CIRCLE = 250;
     private static final int GESTURE_UP_ARROW = 252;
@@ -166,6 +175,9 @@ public class KeyHandler implements DeviceKeyHandler {
     private boolean mToggleTorch;
     private boolean mTorchState;
     private boolean mDoubleTapToWake;
+    private Toast toast;
+    private final Context mSysUiContext;
+    private final Context mResContext;
 
     private SensorEventListener mPocketProximitySensor = new SensorEventListener() {
         @Override
@@ -249,7 +261,7 @@ public class KeyHandler implements DeviceKeyHandler {
                     Settings.System.DEVICE_FEATURE_SETTINGS))){
                 updateDozeSettings();
                 return;
-            } 
+            }
             update();
         }
 
@@ -303,6 +315,8 @@ public class KeyHandler implements DeviceKeyHandler {
         systemStateFilter.addAction(Intent.ACTION_SCREEN_OFF);
         systemStateFilter.addAction(Intent.ACTION_USER_SWITCHED);
         mContext.registerReceiver(mSystemStateReceiver, systemStateFilter);
+        mSysUiContext = ActivityThread.currentActivityThread().getSystemUiContext();
+        mResContext = getPackageContext(mContext, "org.omnirom.device");
         (new UEventObserver() {
             @Override
             public void onUEvent(UEventObserver.UEvent event) {
@@ -313,11 +327,11 @@ public class KeyHandler implements DeviceKeyHandler {
                     boolean vibrate = state.contains("USB-HOST=0");
                     if (DEBUG) Log.i(TAG, "state = " + state + " Got ringing = " + ringing + ", silent = " + silent + ", vibrate = " + vibrate);
                     if(ringing && !silent && !vibrate)
-                        doHandleSliderAction(2);
+                        doHandleSliderAction(2,390);
                     if(silent && !ringing && !vibrate)
-                        doHandleSliderAction(0);
+                        doHandleSliderAction(0, 270);
                     if(vibrate && !silent && !ringing)
-                        doHandleSliderAction(1);
+                        doHandleSliderAction(1, 330);
                 } catch(Exception e) {
                     Log.e(TAG, "Failed parsing uevent", e);
                 }
@@ -512,24 +526,28 @@ public class KeyHandler implements DeviceKeyHandler {
         return 0;
     }
 
-    private void doHandleSliderAction(int position) {
+    private void doHandleSliderAction(int position, int yOffset) {
         int action = getSliderAction(position);
         if ( action == 0) {
             mNoMan.setZenMode(ZEN_MODE_OFF, null, TAG);
             mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
             disableTorch();
+            showToast(R.string.toast_ringer, Toast.LENGTH_SHORT, yOffset);
         } else if (action == 1) {
             mNoMan.setZenMode(ZEN_MODE_OFF, null, TAG);
             mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_VIBRATE);
             disableTorch();
+            showToast(R.string.toast_vibrate, Toast.LENGTH_SHORT, yOffset);
         } else if (action == 2) {
             mNoMan.setZenMode(ZEN_MODE_OFF, null, TAG);
             mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_SILENT);
             disableTorch();
+            showToast(R.string.toast_silent, Toast.LENGTH_SHORT, yOffset);
         } else if (action == 3) {
             mNoMan.setZenMode(ZEN_MODE_IMPORTANT_INTERRUPTIONS, null, TAG);
             mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
             disableTorch();
+            showToast(R.string.toast_dnd, Toast.LENGTH_SHORT, yOffset);
         } else if (action == 4) {
             mNoMan.setZenMode(ZEN_MODE_OFF, null, TAG);
             mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
@@ -539,6 +557,7 @@ public class KeyHandler implements DeviceKeyHandler {
                 mToggleTorch = true;
                 mTorchState = true;
                 toggleTorch();
+            showToast(R.string.toast_flash, Toast.LENGTH_SHORT, yOffset);
             }
         }
 
@@ -689,6 +708,20 @@ public class KeyHandler implements DeviceKeyHandler {
         return "android.sensor.proximity";
     }
 
+    void showToast(int messageId, int duration, int yOffset) {
+        final String message = mResContext.getResources().getString(messageId);
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+        @Override
+        public void run() {
+            if (toast != null) toast.cancel();
+            toast = Toast.makeText(mSysUiContext, message, duration);
+            toast.setGravity(Gravity.TOP|Gravity.RIGHT, 0, yOffset);
+            toast.show();
+            }
+        });
+    }
+
     private class ClientPackageNameObserver extends FileObserver {
 
         public ClientPackageNameObserver(String file) {
@@ -725,5 +758,22 @@ public class KeyHandler implements DeviceKeyHandler {
         String calibDataString = TextUtils.join(",", valueList);
         if (DEBUG) Log.i(TAG, "calibDataString = " + calibDataString);
         Utils.writeValue(TRI_STATE_CALIB_PATH, calibDataString);
+    }
+
+
+ public static Context getPackageContext(Context context, String packageName) {
+        Context pkgContext = null;
+        if (context.getPackageName().equals(packageName)) {
+            pkgContext = context;
+        } else {
+            try {
+                pkgContext = context.createPackageContext(packageName,
+                        Context.CONTEXT_IGNORE_SECURITY
+                                | Context.CONTEXT_INCLUDE_CODE);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return pkgContext;
     }
 }
