@@ -9,7 +9,7 @@ BUILD_BROKEN_DUP_RULES := true
 BOARD_VENDOR := oneplus
 
 VENDOR_PATH := device/oneplus/sm8150-common
-TEMPORARY_DISABLE_PATH_RESTRICTIONS=true
+# TEMPORARY_DISABLE_PATH_RESTRICTIONS=true
 
 # Architecture
 TARGET_ARCH := arm64
@@ -38,7 +38,8 @@ TARGET_USES_UEFI := true
 
 # Kernel
 BOARD_KERNEL_BASE := 0x00000000
-BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 androidboot.usbcontroller=a600000.dwc3 androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 androidboot.usbcontroller=a600000.dwc3
+ # androidboot.selinux=permissive
 BOARD_KERNEL_CMDLINE += androidboot.vbmeta.avb_version=1.0
 BOARD_KERNEL_IMAGE_NAME := Image-dtb
 BOARD_KERNEL_PAGESIZE := 4096
@@ -53,7 +54,7 @@ TARGET_KERNEL_HEADER_ARCH := arm64
 TARGET_KERNEL_CONFIG := kronic_defconfig
 TARGET_KERNEL_SOURCE := kernel/oneplus/sm8150
 TARGET_USE_LATEST_CLANG := true
-ALLOW_PERMISSIVE_SELINUX=1
+# ALLOW_PERMISSIVE_SELINUX=1
 
 # Platform
 BOARD_USES_QCOM_HARDWARE := true
@@ -198,7 +199,7 @@ VENDOR_SECURITY_PATCH := 2019-09-05
 
 # We modify several neverallows, so let the build proceed
 ifneq ($(TARGET_BUILD_VARIANT),userdebug)
-SELINUX_IGNORE_NEVERALLOWS := true
+# SELINUX_IGNORE_NEVERALLOWS := true
 endif
 
 
