@@ -15,3 +15,20 @@ set_prop(vendor_init, vendor_disable_spu_prop)
 
 # Allow vendor_init to set vendor_tee_listener_prop
 get_prop(vendor_init, vendor_tee_listener_prop)
+
+allow vendor_init anr_data_file:dir setattr;
+allow vendor_init dash_device:chr_file getattr;
+allow vendor_init debugfs:file getattr;
+allow vendor_init dropbox_data_file:dir setattr;
+allow vendor_init nfc_data_file:dir setattr;
+allow vendor_init system_data_file:dir setattr;
+allow vendor_init usermodehelper:file write;
+
+allow vendor_init anr_data_file:dir read;
+allow vendor_init gsi_metadata_file:dir search;
+allow vendor_init nfc_data_file:dir read;
+allow vendor_init proc_cmdline:file getattr;
+allow vendor_init system_data_file:dir read;
+allow vendor_init anr_data_file:dir open;
+allow vendor_init nfc_data_file:dir open;
+allow vendor_init system_data_file:dir open;

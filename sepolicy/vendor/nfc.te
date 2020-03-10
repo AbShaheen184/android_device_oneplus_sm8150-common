@@ -3,3 +3,7 @@ allow nfc hal_wiredse_hwservice:hwservice_manager find;
 
 # Allow nfc to get vendor_nfc_prop
 get_prop(nfc, vendor_nfc_prop)
+allow nfc theme_prop:file read;
+allow nfc theme_prop:file open;
+allow nfc theme_prop:file getattr;
+allow nfc theme_prop:file map;

@@ -1,3 +1,5 @@
+# type sysfs_io_sched_tuneable, fs_type, sysfs_type;
+
 # Allow qti_init_shell to write to sysfs_fsc
 allow qti_init_shell sysfs_fsc:file w_file_perms;
 
@@ -6,3 +8,15 @@ allow qti_init_shell sysfs_scsi_host:file w_file_perms;
 
 # Allow qti_init_shell to get vendor_memplus_prop
 get_prop(qti_init_shell, vendor_memplus_prop)
+
+# Missing during audit
+allow qti_init_shell default_prop:file read;
+allow qti_init_shell kmsg_device:chr_file write;
+allow qti_init_shell sysfs:file write;
+# allow qti_init_shell sysfs_io_sched_tuneable:file write;
+
+allow qti_init_shell default_prop:file open;
+allow qti_init_shell default_prop:file getattr;
+allow qti_init_shell kmsg_device:chr_file open;
+
+

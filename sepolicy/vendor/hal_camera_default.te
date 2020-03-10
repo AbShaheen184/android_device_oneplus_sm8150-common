@@ -7,6 +7,9 @@ allow hal_camera_default hal_cameraHIDL_hwservice:hwservice_manager find;
 # Persist files
 allow hal_camera_default persist_camera_file:dir w_dir_perms;
 allow hal_camera_default persist_camera_file:file create_file_perms;
+allow hal_camera_default vendor_camera_data_file:dir rw_dir_perms;
+allow hal_camera_default vendor_camera_data_file:file rw_file_perms;
+
 
 # Allow hal_camera_default to search in mnt/vendor
 allow hal_camera_default mnt_vendor_file:dir search;
@@ -29,3 +32,5 @@ allow hal_camera_default mnt_vendor_file:dir r_dir_perms;
 
 # Sysfs
 allow hal_camera_default sysfs:file r_file_perms;
+# For boot time GPU access (b/111370628)
+hal_client_domain(hal_camera_default, hal_configstore)

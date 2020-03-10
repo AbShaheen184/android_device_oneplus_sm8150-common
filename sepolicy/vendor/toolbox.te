@@ -1,0 +1,2 @@
+allow toolbox audio_device:dir getattr;
+allow toolbox audio_device:dir relabelfrom;

@@ -19,4 +19,7 @@ allow hal_nfc_default nfc_data_file:file { r_file_perms };
 
 allow cameraserver lineage_data_file:file rw_file_perms;
 allow cameraserver lineage_data_file:dir write;
+allow cameraserver system_data_file:file write;
+allow cameraserver system_data_file:file open;
+
 

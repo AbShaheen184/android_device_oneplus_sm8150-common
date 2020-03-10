@@ -29,3 +29,11 @@ allow hal_audio_default hal_dms_default:binder transfer;
 allow hal_audio_default hal_param_hwservice:hwservice_manager find;
 get_prop(hal_audio_default, vendor_audio_prop)
 allow hal_audio_default diag_device:chr_file rw_file_perms;
+
+# Missing found duting audit.
+allow hal_audio_default audio_prop:file read;
+allow hal_audio_default sysfs:dir read;
+allow hal_audio_default audio_prop:file open;
+allow hal_audio_default sysfs:dir open;
+allow hal_audio_default audio_prop:file getattr;
+allow hal_audio_default audio_prop:file map;
