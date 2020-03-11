@@ -253,7 +253,6 @@ PRODUCT_PACKAGES += \
 
 # Device
 PRODUCT_PACKAGES += \
-	OnePlusDoze \
     DeviceParts \
 	ExactCalculator \
 	DeskClock \
