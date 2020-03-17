@@ -53,6 +53,13 @@ vendor/lib/com.qualcomm.qti.ant@1.0.so
 vendor/lib64/hw/com.qualcomm.qti.ant@1.0-impl.so
 vendor/lib64/com.qualcomm.qti.ant@1.0.so
 
+# Apex (system)
+system/apex/com.android.conscrypt.apex
+system/apex/com.android.media.apex
+system/apex/com.android.media.swcodec.apex
+system/apex/com.android.resolv.apex
+system/apex/com.android.tzdata.apex
+
 # Audio
 vendor/bin/hw/vendor.dolby.hardware.dms@1.0-service
 vendor/etc/dolby/dax-default.xml
