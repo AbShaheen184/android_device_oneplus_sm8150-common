@@ -48,8 +48,6 @@ import android.util.Log;
 public class DeviceSettings extends PreferenceFragment implements
         Preference.OnPreferenceChangeListener {
 
-    public static final String KEY_VIBSTRENGTH = "vib_strength";
-
     private static final String KEY_SLIDER_MODE_TOP = "slider_mode_top";
     private static final String KEY_SLIDER_MODE_CENTER = "slider_mode_center";
     private static final String KEY_SLIDER_MODE_BOTTOM = "slider_mode_bottom";
@@ -73,8 +71,6 @@ public class DeviceSettings extends PreferenceFragment implements
     public static final String SLIDER_DEFAULT_VALUE = "2,1,0";
 
     public static final String KEY_SETTINGS_PREFIX = "device_setting_";
-
-    private VibratorStrengthPreference mVibratorStrength;
     private ListPreference mSliderModeTop;
     private ListPreference mSliderModeCenter;
     private ListPreference mSliderModeBottom;
@@ -93,11 +89,6 @@ public class DeviceSettings extends PreferenceFragment implements
         setPreferencesFromResource(R.xml.main, rootKey);
         mContext = this.getContext();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-
-        mVibratorStrength = (VibratorStrengthPreference) findPreference(KEY_VIBSTRENGTH);
-        if (mVibratorStrength != null) {
-            mVibratorStrength.setEnabled(VibratorStrengthPreference.isSupported());
-        }
 
         mSliderModeTop = (ListPreference) findPreference(KEY_SLIDER_MODE_TOP);
         mSliderModeTop.setOnPreferenceChangeListener(this);
@@ -135,29 +126,10 @@ public class DeviceSettings extends PreferenceFragment implements
         mOtgSwitch.setChecked(UsbOtgSwitch.isCurrentlyEnabled(this.getContext()));
         mOtgSwitch.setOnPreferenceChangeListener(new UsbOtgSwitch(getContext()));
 
-        mAutoRefreshRate = (SwitchPreference) findPreference(KEY_AUTO_REFRESH_RATE);
-        mAutoRefreshRate.setChecked(AutoRefreshRateSwitch.isCurrentlyEnabled(this.getContext()));
-        mAutoRefreshRate.setOnPreferenceChangeListener(new AutoRefreshRateSwitch(getContext()));
-
-        mRefreshRate = (TwoStatePreference) findPreference(KEY_REFRESH_RATE);
-        mRefreshRate.setEnabled(!AutoRefreshRateSwitch.isCurrentlyEnabled(this.getContext()));
-        mRefreshRate.setChecked(RefreshRateSwitch.isCurrentlyEnabled(this.getContext()));
-        mRefreshRate.setOnPreferenceChangeListener(new RefreshRateSwitch(getContext()));
-
         mFpsInfo = (SwitchPreference) findPreference(KEY_FPS_INFO);
         mFpsInfo.setChecked(prefs.getBoolean(KEY_FPS_INFO, false));
         mFpsInfo.setOnPreferenceChangeListener(this);
 
-        mEnableDolbyAtmos = (SwitchPreference) findPreference(KEY_ENABLE_DOLBY_ATMOS);
-        mEnableDolbyAtmos.setOnPreferenceChangeListener(this);
-    }
-
-    @Override
-    public boolean onPreferenceTreeClick(Preference preference) {
-        if (preference == mAutoRefreshRate) {
-              mRefreshRate.setEnabled(!AutoRefreshRateSwitch.isCurrentlyEnabled(this.getContext()));
-        }
-        return super.onPreferenceTreeClick(preference);
     }
 
     @Override

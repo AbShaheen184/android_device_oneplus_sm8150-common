@@ -460,10 +460,6 @@ public class KeyHandler implements DeviceKeyHandler {
             mClientObserver = new ClientPackageNameObserver(CLIENT_PACKAGE_PATH);
             mClientObserver.startWatching();
         }
-        if (sIsOnePlus7) {
-            //mMotorHandler.removeCallbacksAndMessages(mCameraMotorSwitch);
-            CameraMotorController.toggleCameraSwitch(true);
-        }
         Utils.writeValue(DYNAMIC_FPS_PATH, "90");
     }
 
@@ -501,9 +497,6 @@ public class KeyHandler implements DeviceKeyHandler {
         if (mClientObserver != null) {
             mClientObserver.stopWatching();
             mClientObserver = null;
-        }
-        if (sIsOnePlus7) {
-            CameraMotorController.toggleCameraSwitch(false);
         }
     }
 

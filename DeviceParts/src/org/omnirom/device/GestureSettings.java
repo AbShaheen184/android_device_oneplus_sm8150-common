@@ -84,7 +84,6 @@ public class GestureSettings extends PreferenceFragment implements
     private AppSelectListPreference mGestureMApp;
     private AppSelectListPreference mGestureWApp;
     private AppSelectListPreference mGestureSApp;
-    private static final boolean sIsOnePlus6 = android.os.Build.MODEL.equals("ONEPLUS A6003");
     private List<AppSelectListPreference.PackageItem> mInstalledPackages = new LinkedList<AppSelectListPreference.PackageItem>();
     private PackageManager mPm;
 
