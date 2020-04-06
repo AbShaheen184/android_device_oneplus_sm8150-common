@@ -39,7 +39,7 @@ TARGET_USES_UEFI := true
 # Kernel
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 androidboot.usbcontroller=a600000.dwc3
- # androidboot.selinux=permissive
+# androidboot.selinux=permissive
 BOARD_KERNEL_CMDLINE += androidboot.vbmeta.avb_version=1.0
 BOARD_KERNEL_IMAGE_NAME := Image-dtb
 BOARD_KERNEL_PAGESIZE := 4096
@@ -102,7 +102,6 @@ TARGET_USES_QTI_CAMERA_DEVICE := true
 USE_DEVICE_SPECIFIC_CAMERA := true
 TARGET_CAMERA_NEEDS_CLIENT_INFO := true
 
-
 # Charger
 BOARD_CHARGER_ENABLE_SUSPEND := true
 
@@ -121,6 +120,8 @@ WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY ?= true
 MAX_VIRTUAL_DISPLAY_DIMENSION := 4096
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
+TARGET_HAS_HDR_DISPLAY := true
+TARGET_HAS_WIDE_COLOR_DISPLAY := true
 TARGET_USES_DISPLAY_RENDER_INTENTS := true
 TARGET_USES_DRM_PP := true
 TARGET_USES_GRALLOC1 := true
@@ -129,6 +130,10 @@ TARGET_USES_ION := true
 
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
 MAX_EGL_CACHE_SIZE := 2048*1024
+
+# Graphics
+VSYNC_EVENT_PHASE_OFFSET_NS := 2000000
+SF_VSYNC_EVENT_PHASE_OFFSET_NS := 6000000
 
 # DRM
 TARGET_ENABLE_MEDIADRM_64 := true
