@@ -10,7 +10,6 @@ $(call inherit-product, vendor/addons/onepluscamera/config.mk)
 # Get non-open-source specific aspects
 $(call inherit-product-if-exists, vendor/oneplus/sm8150-common/sm8150-common-vendor.mk)
 
-
 # Vendor properties
 -include $(LOCAL_PATH)/vendor_props.mk
 
@@ -29,6 +28,7 @@ AB_OTA_UPDATER := true
 AB_OTA_PARTITIONS += \
     boot \
     dtbo \
+    odm \
     system \
     vendor \
     vbmeta
@@ -226,8 +226,8 @@ TARGET_GAPPS_ARCH := arm64
 DERP_BUILDTYPE := Official
 BUILD_DATE := $(shell date +"%Y%m%d-%H%M%S")
 IS_PHONE := true
-CURRENT_BUILD_TYPE := nogapps
-DERP_BUILD_ZIP_TYPE := VANILLA
+# CURRENT_BUILD_TYPE := nogapps
+# DERP_BUILD_ZIP_TYPE := VANILLA
 
 
 # Display
@@ -271,7 +271,6 @@ PRODUCT_PACKAGES += \
     vendor.lineage.biometrics.fingerprint.inscreen@1.0-service.oneplus_msmnile \
     vendor.oneplus.fingerprint.extension@1.0.vendor \
     vendor.oneplus.hardware.display@1.0.vendor
-										  
 
 # For config.fs
 PRODUCT_PACKAGES += \
