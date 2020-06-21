@@ -68,3 +68,5 @@ get_prop(hal_sensors_default, vendor_sensors_prop)
 
 allow hal_sensors_default sysfs:file write;
 allow hal_sensors_default sysfs:file open;
+
+allow hal_sensors_default sysfs:file getattr;
