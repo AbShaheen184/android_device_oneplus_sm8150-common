@@ -268,6 +268,10 @@ PRODUCT_PACKAGES += \
     android.hardware.drm@1.0-service \
     android.hardware.drm@1.2-service.clearkey
 
+# Face Unlock
+TARGET_FACE_UNLOCK_SUPPORTED := true
+TARGET_DISABLE_ALTERNATIVE_FACE_UNLOCK := false
+
 # Fingerprint
 PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint@2.1-service.oneplus_msmnile \
