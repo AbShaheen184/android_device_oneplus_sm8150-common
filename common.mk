@@ -5,6 +5,7 @@
 #
 # Enable updating of APEXes
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
+$(call inherit-product-if-exists, vendor/google/customization/config.mk)
 $(call inherit-product, vendor/addons/onepluscamera/config.mk)
 
 # Get non-open-source specific aspects
@@ -226,8 +227,10 @@ TARGET_GAPPS_ARCH := arm64
 DERP_BUILDTYPE := Official
 BUILD_DATE := $(shell date +"%Y%m%d-%H%M%S")
 IS_PHONE := true
-# CURRENT_BUILD_TYPE := nogapps
-# DERP_BUILD_ZIP_TYPE := VANILLA
+CURRENT_BUILD_TYPE := nogapps
+DERP_BUILD_ZIP_TYPE := VANILLA
+TARGET_FLATTEN_APEX := true
+
 
 
 # Display
