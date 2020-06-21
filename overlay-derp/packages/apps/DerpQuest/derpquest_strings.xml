@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2015-2018 AOSiP
+     Copyright (C) 2017-2019 The PixelDust Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
      You may obtain a copy of the License at
 
-          http://www.apache.org/licenses/LICENSE-2.0
+         http://www.apache.org/licenses/LICENSE-2.0
 
      Unless required by applicable law or agreed to in writing, software
      distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,8 @@
      limitations under the License.
 -->
 <resources>
-    <!-- Color of the FOD view -->
-    <color name="config_fodColor">#1ccc1f</color>
 
-<!-- Partial screenshot -->
-    <color name="screenshot_partial_layout_background">#20000000</color>
-    <color name="screenshot_partial_selector_background">#A0000000</color>
-    <color name="screenshot_partial_capture_background">@*android:color/accent_device_default_light</color>
-    <color name="screenshot_partial_cancel_background">#a0000000</color>
+    <!-- FOD pressed state behavior -->
+    <string name="fod_pressed_state_icon">Default Icon(For OnePlus)</string>
 
 </resources>
