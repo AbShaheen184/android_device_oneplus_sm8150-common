@@ -77,7 +77,6 @@ public class DeviceSettings extends PreferenceFragment implements
     private static TwoStatePreference mHBMModeSwitch;
     private static TwoStatePreference mDCDModeSwitch;
     private static TwoStatePreference mOtgSwitch;
-    private static TwoStatePreference mRefreshRate;
     private static SwitchPreference mAutoRefreshRate;
     private static Context mContext;
     private static SwitchPreference mFpsInfo;
@@ -121,16 +120,13 @@ public class DeviceSettings extends PreferenceFragment implements
         mDCDModeSwitch.setChecked(DCDModeSwitch.isCurrentlyEnabled(this.getContext()));
         mDCDModeSwitch.setOnPreferenceChangeListener(new DCDModeSwitch(getContext()));
 
-        mOtgSwitch = (TwoStatePreference) findPreference(KEY_OTG_SWITCH);
-        mOtgSwitch.setEnabled(UsbOtgSwitch.isSupported());
-        mOtgSwitch.setChecked(UsbOtgSwitch.isCurrentlyEnabled(this.getContext()));
-        mOtgSwitch.setOnPreferenceChangeListener(new UsbOtgSwitch(getContext()));
-
         mFpsInfo = (SwitchPreference) findPreference(KEY_FPS_INFO);
         mFpsInfo.setChecked(prefs.getBoolean(KEY_FPS_INFO, false));
         mFpsInfo.setOnPreferenceChangeListener(this);
 
-    }
+        mEnableDolbyAtmos = (SwitchPreference) findPreference(KEY_ENABLE_DOLBY_ATMOS);	
+        mEnableDolbyAtmos.setOnPreferenceChangeListener(this);	
+    }	
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -176,6 +172,7 @@ public class DeviceSettings extends PreferenceFragment implements
                 this.getContext().getPackageManager().setComponentEnabledSetting(name,
                         PackageManager.COMPONENT_ENABLED_STATE_DISABLED, 0);
             }
+           return true;
         }
         return true;
     }
