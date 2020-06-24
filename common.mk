@@ -149,6 +149,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += oneplus-mock
 PRODUCT_BOOT_JARS += oneplus-mock
 
+#  mclaren Bootanimation
+TARGET_EXCLUDE_BOOTANIMATION := true
+
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/prebuilts/bootanimation.zip:system/product/media/bootanimation.zip
+
 # Boot control
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.0-impl:64 \
