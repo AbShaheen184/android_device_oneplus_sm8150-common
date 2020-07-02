@@ -28,3 +28,11 @@ allow system_app sysfs_leds:lnk_file read;
 allow system_app proc_touchpanel:file open;
 allow system_app sysfs_usb_supply:dir search;
 allow system_app vendor_default_prop:file read;
+
+# RGB Accent picker
+get_prop(system_app, theme_prop)	
+set_prop(system_app, theme_prop)
+allow system_app theme_prop:file { getattr map open read };
+
+allow system_app postinstall_mnt_dir:dir getattr;
+allow system_app system_data_file:dir read;

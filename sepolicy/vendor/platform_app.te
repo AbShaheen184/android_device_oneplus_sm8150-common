@@ -1,2 +1,10 @@
 allow platform_app hal_dms_hwservice:hwservice_manager find;
 allow platform_app hal_dms_default:binder { call transfer };
+allow platform_app sysfs_graphics:file r_file_perms;
+binder_call(platform_app, hal_dms_default)
+
+# RGB Accent picker
+allow platform_app theme_prop:file { getattr map open read };
+get_prop(platform_app, theme_prop)
+
+

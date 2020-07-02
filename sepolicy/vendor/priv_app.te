@@ -13,3 +13,8 @@ allow priv_app proc_modules:file { getattr open };
 allow priv_app proc_net:file read;
 allow priv_app sysfs_android_usb:file open;
 allow priv_app theme_prop:file getattr;
+allow priv_app theme_prop:file map;
+allow priv_app sysfs:dir { open read };
+allow priv_app sysfs_loop:file { open read };
+get_prop(priv_app, theme_prop)	
+set_prop(priv_app, theme_prop)
