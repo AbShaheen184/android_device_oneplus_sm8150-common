@@ -149,7 +149,9 @@ PRODUCT_BOOT_JARS += oneplus-mock
 #  mclaren Bootanimation
 TARGET_EXCLUDE_BOOTANIMATION := true
 
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/prebuilts/bootanimation.zip:system/product/media/bootanimation.zip
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilts/bootanimation.zip:system/product/media/bootanimation.zip \
+    $(LOCAL_PATH)/prebuilts/bootanimation.zip:system/product/media/bootanimation-dark.zip
 
 # Boot control
 PRODUCT_PACKAGES += \
