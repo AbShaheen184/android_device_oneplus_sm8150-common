@@ -125,8 +125,8 @@ public class DeviceSettings extends PreferenceFragment implements
         mFpsInfo.setOnPreferenceChangeListener(this);
 
         mEnableDolbyAtmos = (SwitchPreference) findPreference(KEY_ENABLE_DOLBY_ATMOS);	
-        mEnableDolbyAtmos.setOnPreferenceChangeListener(this);	
-    }	
+        mEnableDolbyAtmos.setOnPreferenceChangeListener(this);
+    }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {

@@ -90,9 +90,14 @@ public class KeyHandler implements DeviceKeyHandler {
     private static final int GESTURE_TWO_SWIPE_DOWN = 251;
     private static final int GESTURE_LEFT_V = 253;
     private static final int GESTURE_RIGHT_V = 254;
-    private static final int GESTURE_M = 247;
+    private static final int GESTURE_M = 248;
     private static final int GESTURE_W = 246;
-    private static final int GESTURE_S = 248;
+    private static final int GESTURE_S = 247;
+
+    private static final int GESTURE_RIGHT_SWIPE_SCANCODE = 63;
+    private static final int GESTURE_LEFT_SWIPE_SCANCODE = 65;
+    private static final int GESTURE_DOWN_SWIPE_SCANCODE = 66;
+    private static final int GESTURE_UP_SWIPE_SCANCODE = 64;
 
     private static final int KEY_SINGLE_TAP = 67;
     private static final int KEY_DOUBLE_TAP = 143;
@@ -127,6 +132,10 @@ public class KeyHandler implements DeviceKeyHandler {
         GESTURE_M,
         GESTURE_W,
         GESTURE_S,
+        GESTURE_DOWN_SWIPE_SCANCODE,
+        GESTURE_UP_SWIPE_SCANCODE,
+        GESTURE_LEFT_SWIPE_SCANCODE,
+        GESTURE_RIGHT_SWIPE_SCANCODE,
         KEY_SINGLE_TAP,
         KEY_DOUBLE_TAP,
         KEY_SLIDER_TOP,
@@ -143,6 +152,10 @@ public class KeyHandler implements DeviceKeyHandler {
         GESTURE_M,
         GESTURE_W,
         GESTURE_S,
+        GESTURE_DOWN_SWIPE_SCANCODE,
+        GESTURE_UP_SWIPE_SCANCODE,
+        GESTURE_LEFT_SWIPE_SCANCODE,
+        GESTURE_RIGHT_SWIPE_SCANCODE,
         KEY_SINGLE_TAP,
         KEY_DOUBLE_TAP
     };
@@ -615,6 +628,33 @@ public class KeyHandler implements DeviceKeyHandler {
                 dispatchMediaKeyWithWakeLockToAudioService(KeyEvent.KEYCODE_MEDIA_PREVIOUS);
             }
             return true;
+        } else if (value.equals(AppSelectListPreference.VOLUME_UP_ENTRY)) {
+//            mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,AudioManager.USE_DEFAULT_STREAM_TYPE,AudioManager.FLAG_SHOW_UI);
+            mAudioManager.adjustStreamVolume(
+            AudioManager.STREAM_MUSIC,
+            AudioManager.ADJUST_RAISE,
+            AudioManager.FLAG_PLAY_SOUND | AudioManager.FLAG_SHOW_UI);
+            return true;
+        } else if (value.equals(AppSelectListPreference.VOLUME_DOWN_ENTRY)) {
+//            mAudioManager.adjustSuggestedStreamVolume(AudioManager.ADJUST_LOWER,AudioManager.USE_DEFAULT_STREAM_TYPE,AudioManager.FLAG_SHOW_UI);
+            mAudioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER,
+            AudioManager.FLAG_PLAY_SOUND | AudioManager.FLAG_SHOW_UI);
+            return true;
+        } else if (value.equals(AppSelectListPreference.BROWSE_SCROLL_DOWN_ENTRY)) {
+            aosipUtils.sendKeycode(KeyEvent.KEYCODE_PAGE_DOWN);
+            return true;
+        } else if (value.equals(AppSelectListPreference.BROWSE_SCROLL_UP_ENTRY)) {
+            aosipUtils.sendKeycode(KeyEvent.KEYCODE_PAGE_UP);
+            return true;
+        } else if (value.equals(AppSelectListPreference.NAVIGATE_BACK_ENTRY)) {
+            aosipUtils.sendKeycode(KeyEvent.KEYCODE_BACK);
+            return true;
+        } else if (value.equals(AppSelectListPreference.NAVIGATE_HOME_ENTRY)) {
+            aosipUtils.sendKeycode(KeyEvent.KEYCODE_HOME);
+            return true;
+        } else if (value.equals(AppSelectListPreference.NAVIGATE_RECENT_ENTRY)) {
+            aosipUtils.sendKeycode(KeyEvent.KEYCODE_APP_SWITCH);
+            return true;
         }
         return false;
     }
@@ -645,6 +685,18 @@ public class KeyHandler implements DeviceKeyHandler {
             case GESTURE_S:
                 return Settings.System.getStringForUser(mContext.getContentResolver(),
                     GestureSettings.DEVICE_GESTURE_MAPPING_7, UserHandle.USER_CURRENT);
+            case GESTURE_DOWN_SWIPE_SCANCODE:
+                return Settings.System.getStringForUser(mContext.getContentResolver(),
+                    GestureSettings.DEVICE_GESTURE_MAPPING_8, UserHandle.USER_CURRENT);
+            case GESTURE_UP_SWIPE_SCANCODE:
+                return Settings.System.getStringForUser(mContext.getContentResolver(),
+                    GestureSettings.DEVICE_GESTURE_MAPPING_9, UserHandle.USER_CURRENT);
+            case GESTURE_LEFT_SWIPE_SCANCODE:
+                return Settings.System.getStringForUser(mContext.getContentResolver(),
+                    GestureSettings.DEVICE_GESTURE_MAPPING_10, UserHandle.USER_CURRENT);
+            case GESTURE_RIGHT_SWIPE_SCANCODE:
+                return Settings.System.getStringForUser(mContext.getContentResolver(),
+                    GestureSettings.DEVICE_GESTURE_MAPPING_11, UserHandle.USER_CURRENT);
         }
         return null;
     }
