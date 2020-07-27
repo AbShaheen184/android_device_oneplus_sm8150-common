@@ -110,6 +110,10 @@ public class DeviceSettings extends PreferenceFragment implements
         mSliderModeBottom.setValueIndex(valueIndex);
         mSliderModeBottom.setSummary(mSliderModeBottom.getEntries()[valueIndex]);
 
+        mFpsInfo = (SwitchPreference) findPreference(KEY_FPS_INFO);
+        mFpsInfo.setChecked(prefs.getBoolean(KEY_FPS_INFO, false));
+        mFpsInfo.setOnPreferenceChangeListener(this);
+
         mHBMModeSwitch = (TwoStatePreference) findPreference(KEY_HBM_SWITCH);
         mHBMModeSwitch.setEnabled(HBMModeSwitch.isSupported());
         mHBMModeSwitch.setChecked(HBMModeSwitch.isCurrentlyEnabled(this.getContext()));
@@ -124,8 +128,8 @@ public class DeviceSettings extends PreferenceFragment implements
         mFpsInfo.setChecked(prefs.getBoolean(KEY_FPS_INFO, false));
         mFpsInfo.setOnPreferenceChangeListener(this);
 
-        mEnableDolbyAtmos = (SwitchPreference) findPreference(KEY_ENABLE_DOLBY_ATMOS);	
-        mEnableDolbyAtmos.setOnPreferenceChangeListener(this);
+//        mEnableDolbyAtmos = (SwitchPreference) findPreference(KEY_ENABLE_DOLBY_ATMOS);
+//        mEnableDolbyAtmos.setOnPreferenceChangeListener(this);
     }
 
     @Override
