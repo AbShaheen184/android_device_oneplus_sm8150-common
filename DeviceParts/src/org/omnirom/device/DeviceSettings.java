@@ -54,15 +54,11 @@ public class DeviceSettings extends PreferenceFragment implements
     private static final String KEY_CATEGORY_GRAPHICS = "graphics";
     private static final String KEY_CATEGORY_REFRESH = "refresh";
 
-    public static final String KEY_SRGB_SWITCH = "srgb";
     public static final String KEY_HBM_SWITCH = "hbm";
     public static final String KEY_PROXI_SWITCH = "proxi";
     public static final String KEY_DCD_SWITCH = "dcd";
-    public static final String KEY_DCI_SWITCH = "dci";
-    public static final String KEY_NIGHT_SWITCH = "night";
     public static final String KEY_WIDE_SWITCH = "wide";
 
-    public static final String KEY_OTG_SWITCH = "otg_switch";
     public static final String KEY_REFRESH_RATE = "refresh_rate";
     public static final String KEY_AUTO_REFRESH_RATE = "auto_refresh_rate";
     public static final String KEY_FPS_INFO = "fps_info";
@@ -76,7 +72,6 @@ public class DeviceSettings extends PreferenceFragment implements
     private ListPreference mSliderModeBottom;
     private static TwoStatePreference mHBMModeSwitch;
     private static TwoStatePreference mDCDModeSwitch;
-    private static TwoStatePreference mOtgSwitch;
     private static SwitchPreference mAutoRefreshRate;
     private static Context mContext;
     private static SwitchPreference mFpsInfo;

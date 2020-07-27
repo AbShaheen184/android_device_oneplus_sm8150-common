@@ -26,7 +26,6 @@ import android.provider.Settings;
 import android.text.TextUtils;
 
 public class Startup extends BroadcastReceiver {
-    private static final boolean sIsOnePlus7 = android.os.Build.DEVICE.equals("guacamoleb");
 
     private static void restore(String file, boolean enabled) {
         if (file == null) {
@@ -52,9 +51,6 @@ public class Startup extends BroadcastReceiver {
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
             boolean enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_HBM_SWITCH, false);
             Settings.System.putInt(context.getContentResolver(), HBMModeSwitch.SETTINGS_KEY, enabled ? 1 : 0);
-
-            enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_OTG_SWITCH, false);
-            Settings.System.putInt(context.getContentResolver(), UsbOtgSwitch.SETTINGS_KEY, enabled ? 1 : 0);
 
             Settings.System.putInt(context.getContentResolver(), "omni_device_setting_imported", 1);
         }
@@ -161,8 +157,5 @@ public class Startup extends BroadcastReceiver {
         if (enabled) {
             restore(HBMModeSwitch.getFile(), enabled);
         }
-
-        enabled = Settings.System.getInt(context.getContentResolver(), UsbOtgSwitch.SETTINGS_KEY, 0) != 0;
-        restore(UsbOtgSwitch.getFile(), enabled);
     }
 }

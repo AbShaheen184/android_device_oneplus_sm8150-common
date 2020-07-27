@@ -28,7 +28,6 @@ import androidx.preference.PreferenceManager;
 @TargetApi(24)
 public class HBMModeTileService extends TileService {
     private boolean enabled = false;
-
     @Override
     public void onDestroy() {
         super.onDestroy();
