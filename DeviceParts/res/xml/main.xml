@@ -16,6 +16,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <Preference
         android:key="gesture_category"
+        android:icon="@drawable/ic_gesture"
         android:title="@string/category_gestures_title"
         android:summary="@string/category_gestures_summary"
         android:persistent="false" >
@@ -27,6 +28,7 @@
     <Preference
         android:key="doze_category"
         android:title="@string/doze_category_title"
+        android:icon="@drawable/ic_ambient_display"
         android:summary="@string/doze_category_summary"
         android:persistent="false" >
         <intent android:action="android.intent.action.MAIN"
@@ -63,18 +65,21 @@
         android:title="@string/category_slider">
         <ListPreference
             android:key="slider_mode_top"
+            android:icon="@drawable/ic_alert_slider_up"
             android:title="@string/slider_mode_title_top"
             android:entries="@array/slider_key_action_entries"
             android:entryValues="@array/slider_key_action_values"
             android:persistent="false" />
         <ListPreference
             android:key="slider_mode_center"
+            android:icon="@drawable/ic_alert_slider_center"
             android:title="@string/slider_mode_title_center"
             android:entries="@array/slider_key_action_entries"
             android:entryValues="@array/slider_key_action_values"
             android:persistent="false" />
         <ListPreference
             android:key="slider_mode_bottom"
+            android:icon="@drawable/ic_alert_slider_down"
             android:title="@string/slider_mode_title_bottom"
             android:entries="@array/slider_key_action_entries"
             android:entryValues="@array/slider_key_action_values"
@@ -86,15 +91,18 @@
         android:title="@string/graphics_title">
         <SwitchPreference
             android:key="dcd"
+            android:icon="@drawable/ic_dcd"
             android:summary="@string/dcd_mode_summary"
             android:title="@string/dcd_mode_title" />
         <SwitchPreference
             android:key="hbm"
+            android:icon="@drawable/ic_hbm_tile"
             android:summary="@string/hbm_mode_summary"
             android:title="@string/hbm_mode_title"
             android:persistent="false" />
         <SwitchPreference
             android:key="fps_info"
+            android:icon="@drawable/ic_info_outline_24dp"
             android:title="@string/fps_info_title"
             android:summary="@string/fps_info_summary"
             android:persistent="true" />
