@@ -102,7 +102,7 @@
             android:persistent="false" />
         <SwitchPreference
             android:key="fps_info"
-            android:icon="@drawable/ic_info_outline_24dp"
+            android:icon="@drawable/ic_fps_info"
             android:title="@string/fps_info_title"
             android:summary="@string/fps_info_summary"
             android:persistent="true" />
