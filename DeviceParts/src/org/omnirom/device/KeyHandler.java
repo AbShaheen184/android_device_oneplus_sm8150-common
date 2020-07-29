@@ -19,14 +19,22 @@ package org.omnirom.device;
 
 import static android.provider.Settings.Global.ZEN_MODE_OFF;
 import static android.provider.Settings.Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS;
+
 import org.omnirom.device.R;
 import android.app.ActivityThread;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Looper;
 import android.view.Gravity;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.app.ActivityManagerNative;
 import android.app.NotificationManager;
@@ -340,11 +348,11 @@ public class KeyHandler implements DeviceKeyHandler {
                     boolean vibrate = state.contains("USB-HOST=0");
                     if (DEBUG) Log.i(TAG, "state = " + state + " Got ringing = " + ringing + ", silent = " + silent + ", vibrate = " + vibrate);
                     if(ringing && !silent && !vibrate)
-                        doHandleSliderAction(2,390);
+                        doHandleSliderAction(2, 390, mResContext.getDrawable(R.drawable.toast_drawable_down));
                     if(silent && !ringing && !vibrate)
-                        doHandleSliderAction(0, 270);
+                        doHandleSliderAction(0, 270, mResContext.getDrawable(R.drawable.toast_drawable_up));
                     if(vibrate && !silent && !ringing)
-                        doHandleSliderAction(1, 330);
+                        doHandleSliderAction(1, 330, mResContext.getDrawable(R.drawable.toast_drawable_center));
                 } catch(Exception e) {
                     Log.e(TAG, "Failed parsing uevent", e);
                 }
@@ -532,28 +540,28 @@ public class KeyHandler implements DeviceKeyHandler {
         return 0;
     }
 
-    private void doHandleSliderAction(int position, int yOffset) {
+    private void doHandleSliderAction(int position, int yOffset, Drawable drawable) {
         int action = getSliderAction(position);
         if ( action == 0) {
             mNoMan.setZenMode(ZEN_MODE_OFF, null, TAG);
             mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
             disableTorch();
-            showToast(R.string.toast_ringer, Toast.LENGTH_SHORT, yOffset);
+            showToast(R.string.toast_ringer, Toast.LENGTH_SHORT, yOffset, drawable, mResContext.getDrawable(R.drawable.ic_phonelink_ring));
         } else if (action == 1) {
             mNoMan.setZenMode(ZEN_MODE_OFF, null, TAG);
             mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_VIBRATE);
             disableTorch();
-            showToast(R.string.toast_vibrate, Toast.LENGTH_SHORT, yOffset);
+            showToast(R.string.toast_vibrate, Toast.LENGTH_SHORT, yOffset, drawable, mResContext.getDrawable(R.drawable.ic_vibration));
         } else if (action == 2) {
             mNoMan.setZenMode(ZEN_MODE_OFF, null, TAG);
             mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_SILENT);
             disableTorch();
-            showToast(R.string.toast_silent, Toast.LENGTH_SHORT, yOffset);
+            showToast(R.string.toast_silent, Toast.LENGTH_SHORT, yOffset, drawable, mResContext.getDrawable(R.drawable.ic_volume_off));
         } else if (action == 3) {
             mNoMan.setZenMode(ZEN_MODE_IMPORTANT_INTERRUPTIONS, null, TAG);
             mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
             disableTorch();
-            showToast(R.string.toast_dnd, Toast.LENGTH_SHORT, yOffset);
+            showToast(R.string.toast_dnd, Toast.LENGTH_SHORT, yOffset, drawable, mResContext.getDrawable(R.drawable.ic_vol_mute));
         } else if (action == 4) {
             mNoMan.setZenMode(ZEN_MODE_OFF, null, TAG);
             mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
@@ -563,7 +571,7 @@ public class KeyHandler implements DeviceKeyHandler {
                 mToggleTorch = true;
                 mTorchState = true;
                 toggleTorch();
-            showToast(R.string.toast_flash, Toast.LENGTH_SHORT, yOffset);
+            showToast(R.string.toast_flash, Toast.LENGTH_SHORT, yOffset,drawable, mResContext.getDrawable(R.drawable.ic_torch));
             }
         }
 
@@ -753,16 +761,22 @@ public class KeyHandler implements DeviceKeyHandler {
         return "android.sensor.proximity";
     }
 
-    void showToast(int messageId, int duration, int yOffset) {
+    void showToast(int messageId, int duration, int yOffset, Drawable drawable, Drawable ToastIcon) {
         final String message = mResContext.getResources().getString(messageId);
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
-        @Override
-        public void run() {
-            if (toast != null) toast.cancel();
-            toast = Toast.makeText(mSysUiContext, message, duration);
-            toast.setGravity(Gravity.TOP|Gravity.RIGHT, 0, yOffset);
-            toast.show();
+            @Override
+            public void run() {
+                if (toast != null) toast.cancel();
+                toast = Toast.makeText(mSysUiContext, message, duration);
+                View view = toast.getView();
+                view.setBackground(drawable);
+                TextView text = view.findViewById(android.R.id.message);
+                text.setTextColor(Color.WHITE);
+                text.setTextSize(18);
+                toast.setIcon(ToastIcon);
+                toast.setGravity(Gravity.TOP | Gravity.RIGHT, 10, yOffset);
+                toast.show();
             }
         });
     }
