@@ -60,4 +60,4 @@ setup_vendor "$DEVICE" "$VENDOR" "$aosip_ROOT" false "$CLEAN_VENDOR"
 
 extract "$MY_DIR"/proprietary-files.txt "$SRC" "$SECTION"
 
-/setup-makefiles.sh
+./"$MY_DIR"/setup-makefiles.sh
