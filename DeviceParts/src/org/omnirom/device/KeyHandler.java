@@ -92,6 +92,7 @@ public class KeyHandler implements DeviceKeyHandler {
     private static final String DT2W_CONTROL_PATH = "/proc/touchpanel/double_tap_enable";
     private static final String SINGLE_TAP_CONTROL_PATH = "/proc/touchpanel/single_tap_enable";
     public static final String PACKAGE_SYSTEMUI = "com.android.systemui";
+    private static final String ACCENT_COLOR_PROP = "persist.sys.theme.accentcolor";
 
     private static final int GESTURE_CIRCLE = 250;
     private static final int GESTURE_UP_ARROW = 252;
@@ -762,6 +763,14 @@ public class KeyHandler implements DeviceKeyHandler {
     }
 
     void showToast(int messageId, int duration, int yOffset, Drawable drawable, Drawable ToastIcon) {
+        String colorVal = SystemProperties.get(ACCENT_COLOR_PROP, "-1");
+        int color = "-1".equals(colorVal)
+                ? Color.WHITE
+                : Color.parseColor("#" + colorVal);
+        int colorFrom = Color.RED;
+        int colorTo = Color.GREEN;
+        int animduration = 1000;
+
         final String message = mResContext.getResources().getString(messageId);
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
@@ -772,9 +781,10 @@ public class KeyHandler implements DeviceKeyHandler {
                 View view = toast.getView();
                 view.setBackground(drawable);
                 TextView text = view.findViewById(android.R.id.message);
-                text.setTextColor(Color.WHITE);
+                text.setTextColor(color);
                 text.setTextSize(18);
                 toast.setIcon(ToastIcon);
+//                toast.setAnimation(android.R.style.Animation_Translucent);
                 toast.setGravity(Gravity.TOP | Gravity.RIGHT, 10, yOffset);
                 toast.show();
             }
