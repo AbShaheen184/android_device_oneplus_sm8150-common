@@ -24,6 +24,11 @@
     <dimen name="rounded_corner_content_padding">8.0dip</dimen>
     <dimen name="nav_content_padding">0dp</dimen>
 	<dimen name="keyguard_indication_margin_bottom">20dp</dimen>
+    <dimen name="system_icons_keyguard_padding_end">24.0dip</dimen>
+	    <!-- The minimum bottom margin of the keyguard security container -->
+    <dimen name="kg_security_container_min_bottom_margin">160dp</dimen>
+
+
 
 
 
